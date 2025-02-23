@@ -39,7 +39,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Gradient Image" translatesAutoresizingMaskIntoConstraints="NO" id="fQS-hx-5xr">
-                                                    <rect key="frame" x="16" y="170" width="377" height="30"/>
+                                                    <rect key="frame" x="16" y="170" width="361" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="Q0b-Hf-lYH"/>
                                                     </constraints>
@@ -62,7 +62,7 @@
                                             </subviews>
                                             <color key="backgroundColor" name="YP Black"/>
                                             <constraints>
-                                                <constraint firstItem="CfE-8S-BGh" firstAttribute="trailing" secondItem="fQS-hx-5xr" secondAttribute="trailing" constant="-16" id="1p0-Mz-Vaz"/>
+                                                <constraint firstItem="CfE-8S-BGh" firstAttribute="trailing" secondItem="fQS-hx-5xr" secondAttribute="trailing" id="1p0-Mz-Vaz"/>
                                                 <constraint firstItem="CfE-8S-BGh" firstAttribute="top" secondItem="P5M-95-d6S" secondAttribute="top" constant="4" id="7EL-my-qSF"/>
                                                 <constraint firstAttribute="bottom" secondItem="CfE-8S-BGh" secondAttribute="bottom" constant="4" id="Ano-bJ-oZp"/>
                                                 <constraint firstItem="CfE-8S-BGh" firstAttribute="bottom" secondItem="XYG-vf-2bv" secondAttribute="bottom" constant="8" id="REO-FN-USP"/>
