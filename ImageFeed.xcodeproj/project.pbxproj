@@ -40,6 +40,16 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		AD70102E2D73208B0087B366 /* Profile */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		AD70102F2D7320AA0087B366 /* SingleImage */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SingleImage;
+			sourceTree = "<group>";
+		};
 		ADE9EE472D69F80600689BAE /* ImageFeed */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -93,6 +103,8 @@
 		ADE9EE3C2D69F80600689BAE = {
 			isa = PBXGroup;
 			children = (
+				AD70102F2D7320AA0087B366 /* SingleImage */,
+				AD70102E2D73208B0087B366 /* Profile */,
 				ADE9EF1D2D6B733E00689BAE /* ImagesList */,
 				ADE9EE472D69F80600689BAE /* ImageFeed */,
 				ADE9EE5E2D69F80700689BAE /* ImageFeedTests */,
@@ -127,6 +139,8 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				AD70102E2D73208B0087B366 /* Profile */,
+				AD70102F2D7320AA0087B366 /* SingleImage */,
 				ADE9EE472D69F80600689BAE /* ImageFeed */,
 				ADE9EF1D2D6B733E00689BAE /* ImagesList */,
 			);
