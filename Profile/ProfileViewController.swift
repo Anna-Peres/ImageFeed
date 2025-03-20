@@ -8,11 +8,6 @@
 import UIKit
 
 final class ProfileViewController: UIViewController {
-    @IBOutlet private var profileImageView: UIImageView!
-    @IBOutlet private var nameLabel: UILabel!
-    @IBOutlet private var loginNameLabel: UILabel!
-    @IBOutlet private var descriptionLabel: UILabel!
-    @IBOutlet private var logoutButton: UIButton!
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -31,8 +26,6 @@ final class ProfileViewController: UIViewController {
             profileImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
             profileImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16)
         ])
-        self.profileImageView = profileImageView
-        
         
         let nameLabel = UILabel()
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -48,7 +41,6 @@ final class ProfileViewController: UIViewController {
             nameLabel.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 8),
             nameLabel.leadingAnchor.constraint(equalTo: profileImageView.leadingAnchor)
         ])
-        self.nameLabel = nameLabel
         
         let loginNameLabel = UILabel()
         loginNameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -56,7 +48,7 @@ final class ProfileViewController: UIViewController {
         let loginNameLabelStrokeTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor.ypGray,
             NSAttributedString.Key.font : UIFont.systemFont(ofSize: 13),
-        ] as! [NSAttributedString.Key : Any]
+        ]
         
         loginNameLabel.attributedText = NSMutableAttributedString(string: "@ekaterina_nov", attributes: loginNameLabelStrokeTextAttributes)
         
@@ -64,7 +56,6 @@ final class ProfileViewController: UIViewController {
             loginNameLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
             loginNameLabel.leadingAnchor.constraint(equalTo: profileImageView.leadingAnchor)
         ])
-        self.loginNameLabel = loginNameLabel
         
         let descriptionLabel = UILabel()
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -80,7 +71,6 @@ final class ProfileViewController: UIViewController {
             descriptionLabel.topAnchor.constraint(equalTo: loginNameLabel.bottomAnchor, constant: 8),
             descriptionLabel.leadingAnchor.constraint(equalTo: profileImageView.leadingAnchor)
         ])
-        self.loginNameLabel = descriptionLabel
         
         let logoutButton = UIButton.systemButton(
             with: UIImage(named: "Logout Image")!,
@@ -96,9 +86,9 @@ final class ProfileViewController: UIViewController {
             logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             logoutButton.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor)
             ])
-        self.logoutButton = logoutButton
     }
     
     @IBAction private func didTapLogoutButton() {
+        // TODO:
     }
 }
