@@ -16,6 +16,18 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypBlack
+        configureProfileImage()
+        configureNameLabel()
+        configureLoginNameLabel()
+        configureDescriptionLabel()
+        configureLogoutButton()
+    }
+    
+    @IBAction private func didTapLogoutButton() {
+        // TODO:
+    }
+    
+    private func configureProfileImage() {
         let profileImage = UIImage(named: "Profile Image")
         let profileImageView = UIImageView(image: profileImage)
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -26,22 +38,26 @@ final class ProfileViewController: UIViewController {
             profileImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
             profileImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16)
         ])
-        
+    }
+    
+    private func configureNameLabel() {
         let nameLabel = UILabel()
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(nameLabel)
         let nameLabelStrokeTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor.ypWhite,
             NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 23),
-        ] as! [NSAttributedString.Key : Any]
+        ]
         
         nameLabel.attributedText = NSMutableAttributedString(string: "Екатерина Новикова", attributes: nameLabelStrokeTextAttributes)
         
         NSLayoutConstraint.activate([
-            nameLabel.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 8),
-            nameLabel.leadingAnchor.constraint(equalTo: profileImageView.leadingAnchor)
+            nameLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 105),
+            nameLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16)
         ])
-        
+    }
+    
+    private func configureLoginNameLabel() {
         let loginNameLabel = UILabel()
         loginNameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(loginNameLabel)
@@ -53,25 +69,29 @@ final class ProfileViewController: UIViewController {
         loginNameLabel.attributedText = NSMutableAttributedString(string: "@ekaterina_nov", attributes: loginNameLabelStrokeTextAttributes)
         
         NSLayoutConstraint.activate([
-            loginNameLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
-            loginNameLabel.leadingAnchor.constraint(equalTo: profileImageView.leadingAnchor)
+            loginNameLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 136),
+            loginNameLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16)
         ])
-        
+    }
+    
+    private func configureDescriptionLabel() {
         let descriptionLabel = UILabel()
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(descriptionLabel)
         let descriptionLabelStrokeTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor.ypWhite,
             NSAttributedString.Key.font : UIFont.systemFont(ofSize: 13),
-        ] as! [NSAttributedString.Key : Any]
+        ]
         
         descriptionLabel.attributedText = NSMutableAttributedString(string: "Hello, world!", attributes: descriptionLabelStrokeTextAttributes)
         
         NSLayoutConstraint.activate([
-            descriptionLabel.topAnchor.constraint(equalTo: loginNameLabel.bottomAnchor, constant: 8),
-            descriptionLabel.leadingAnchor.constraint(equalTo: profileImageView.leadingAnchor)
+            descriptionLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 162),
+            descriptionLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16)
         ])
-        
+    }
+    
+    private func configureLogoutButton() {
         let logoutButton = UIButton.systemButton(
             with: UIImage(named: "Logout Image")!,
             target: self,
@@ -84,11 +104,7 @@ final class ProfileViewController: UIViewController {
             logoutButton.heightAnchor.constraint(equalToConstant: 44),
             logoutButton.widthAnchor.constraint(equalToConstant: 44),
             logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            logoutButton.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor)
+            logoutButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 45)
             ])
-    }
-    
-    @IBAction private func didTapLogoutButton() {
-        // TODO:
     }
 }
