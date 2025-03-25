@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Backward.png",
+      "filename" : "nav_back_button.png",
       "idiom" : "universal",
       "scale" : "1x"
     },

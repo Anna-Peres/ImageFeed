@@ -30,9 +30,27 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		AD719C622D93032700C07472 /* Exceptions for "ImageFeed" folder in "ImageFeedTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ImageFeedTests/ImageFeedTests.swift,
+			);
+			target = ADE9EE5A2D69F80700689BAE /* ImageFeedTests */;
+		};
+		AD719C632D93032700C07472 /* Exceptions for "ImageFeed" folder in "ImageFeedUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ImageFeedUITests/ImageFeedUITests.swift,
+				ImageFeedUITests/ImageFeedUITestsLaunchTests.swift,
+			);
+			target = ADE9EE642D69F80700689BAE /* ImageFeedUITests */;
+		};
 		ADE9EE6D2D69F80700689BAE /* Exceptions for "ImageFeed" folder in "ImageFeed" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				ImageFeedTests/ImageFeedTests.swift,
+				ImageFeedUITests/ImageFeedUITests.swift,
+				ImageFeedUITests/ImageFeedUITestsLaunchTests.swift,
 				Info.plist,
 			);
 			target = ADE9EE442D69F80600689BAE /* ImageFeed */;
@@ -40,37 +58,14 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		AD70102E2D73208B0087B366 /* Profile */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Profile;
-			sourceTree = "<group>";
-		};
-		AD70102F2D7320AA0087B366 /* SingleImage */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = SingleImage;
-			sourceTree = "<group>";
-		};
 		ADE9EE472D69F80600689BAE /* ImageFeed */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				ADE9EE6D2D69F80700689BAE /* Exceptions for "ImageFeed" folder in "ImageFeed" target */,
+				AD719C622D93032700C07472 /* Exceptions for "ImageFeed" folder in "ImageFeedTests" target */,
+				AD719C632D93032700C07472 /* Exceptions for "ImageFeed" folder in "ImageFeedUITests" target */,
 			);
 			path = ImageFeed;
-			sourceTree = "<group>";
-		};
-		ADE9EE5E2D69F80700689BAE /* ImageFeedTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ImageFeedTests;
-			sourceTree = "<group>";
-		};
-		ADE9EE682D69F80700689BAE /* ImageFeedUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ImageFeedUITests;
-			sourceTree = "<group>";
-		};
-		ADE9EF1D2D6B733E00689BAE /* ImagesList */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ImagesList;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -103,12 +98,7 @@
 		ADE9EE3C2D69F80600689BAE = {
 			isa = PBXGroup;
 			children = (
-				AD70102F2D7320AA0087B366 /* SingleImage */,
-				AD70102E2D73208B0087B366 /* Profile */,
-				ADE9EF1D2D6B733E00689BAE /* ImagesList */,
 				ADE9EE472D69F80600689BAE /* ImageFeed */,
-				ADE9EE5E2D69F80700689BAE /* ImageFeedTests */,
-				ADE9EE682D69F80700689BAE /* ImageFeedUITests */,
 				ADE9EE462D69F80600689BAE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -139,10 +129,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				AD70102E2D73208B0087B366 /* Profile */,
-				AD70102F2D7320AA0087B366 /* SingleImage */,
 				ADE9EE472D69F80600689BAE /* ImageFeed */,
-				ADE9EF1D2D6B733E00689BAE /* ImagesList */,
 			);
 			name = ImageFeed;
 			packageProductDependencies = (
@@ -164,9 +151,6 @@
 			dependencies = (
 				ADE9EE5D2D69F80700689BAE /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				ADE9EE5E2D69F80700689BAE /* ImageFeedTests */,
-			);
 			name = ImageFeedTests;
 			packageProductDependencies = (
 			);
@@ -186,9 +170,6 @@
 			);
 			dependencies = (
 				ADE9EE672D69F80700689BAE /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				ADE9EE682D69F80700689BAE /* ImageFeedUITests */,
 			);
 			name = ImageFeedUITests;
 			packageProductDependencies = (
