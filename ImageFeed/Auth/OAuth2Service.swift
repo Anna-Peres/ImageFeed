@@ -31,10 +31,8 @@ final class OAuth2Service {
     }
     
     func makeOAuthTokenRequest(code: String) -> URLRequest {
-        guard let baseURL = URL(string: "https://unsplash.com") else {
-            preconditionFailure("Unable to construct baseUrl")
-        }
-        guard let url = URL(
+        let baseURL = URL(string: "https://unsplash.com")
+        let url = URL(
             string: "/oauth/token"
             + "?client_id=\(Constants.accessKey)"
             + "&&client_secret=\(Constants.secretKey)"
@@ -42,7 +40,8 @@ final class OAuth2Service {
             + "&&code=\(code)"
             + "&&grant_type=authorization_code",
             relativeTo: baseURL
-        ) else {
+        )
+        guard let url else {
             preconditionFailure("Unable to construct url")
         }
         var request = URLRequest(url: url)

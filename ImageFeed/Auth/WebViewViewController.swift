@@ -6,7 +6,7 @@
 //
 
 import UIKit
-@preconcurrency import WebKit
+import WebKit
 
 enum WebViewConstants {
     static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
@@ -40,6 +40,8 @@ final class WebViewViewController: UIViewController {
         loadAuthView()
         webView.navigationDelegate = self
         updateProgress()
+        
+        print(NSHomeDirectory())
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -55,14 +57,13 @@ final class WebViewViewController: UIViewController {
         forKeyPath keyPath: String?,
         of object: Any?,
         change: [NSKeyValueChangeKey : Any]?,
-        context: UnsafeMutableRawPointer?
-    ) {
-        if keyPath == #keyPath(WKWebView.estimatedProgress) {
-            updateProgress()
-        } else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+        context: UnsafeMutableRawPointer?) {
+            if keyPath == #keyPath(WKWebView.estimatedProgress) {
+                updateProgress()
+            } else {
+                super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+            }
         }
-    }
     
     private func updateProgress() {
         progressView.progress = Float(webView.estimatedProgress)
@@ -70,9 +71,7 @@ final class WebViewViewController: UIViewController {
     }
     
     private func loadAuthView() {
-        guard var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString) else {
-            return
-        }
+        guard var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString) else { return }
         
         urlComponents.queryItems = [
             URLQueryItem(name: "client_id", value: Constants.accessKey),
@@ -81,9 +80,7 @@ final class WebViewViewController: UIViewController {
             URLQueryItem(name: "scope", value: Constants.accessScope)
         ]
         
-        guard let url = urlComponents.url else {
-            return
-        }
+        guard let url = urlComponents.url else { return }
         
         let request = URLRequest(url: url)
         webView.load(request)
@@ -97,8 +94,7 @@ extension WebViewViewController: WKNavigationDelegate {
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
         if let code = code(from: navigationAction) {
-            guard let delegate = self.delegate else { return }
-            delegate.webViewViewController(self, didAuthenticateWithCode: code)
+            delegate?.webViewViewController(self, didAuthenticateWithCode: code)
             decisionHandler(.cancel)
         } else {
             decisionHandler(.allow)
