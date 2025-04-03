@@ -40,8 +40,6 @@ final class WebViewViewController: UIViewController {
         loadAuthView()
         webView.navigationDelegate = self
         updateProgress()
-        
-        print(NSHomeDirectory())
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -71,7 +69,10 @@ final class WebViewViewController: UIViewController {
     }
     
     private func loadAuthView() {
-        guard var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString) else { return }
+        guard var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString) else {
+            print("URLComponents not found")
+            return
+        }
         
         urlComponents.queryItems = [
             URLQueryItem(name: "client_id", value: Constants.accessKey),
@@ -80,7 +81,10 @@ final class WebViewViewController: UIViewController {
             URLQueryItem(name: "scope", value: Constants.accessScope)
         ]
         
-        guard let url = urlComponents.url else { return }
+        guard let url = urlComponents.url else {
+            print("URL not found")
+            return
+        }
         
         let request = URLRequest(url: url)
         webView.load(request)
@@ -94,6 +98,7 @@ extension WebViewViewController: WKNavigationDelegate {
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
         if let code = code(from: navigationAction) {
+            
             delegate?.webViewViewController(self, didAuthenticateWithCode: code)
             decisionHandler(.cancel)
         } else {
@@ -102,25 +107,16 @@ extension WebViewViewController: WKNavigationDelegate {
     }
     
     private func code(from navigationAction: WKNavigationAction) -> String? {
-        guard let url = navigationAction.request.url else {
-            print("URL not found in navigationAction")
+        if
+            let url = navigationAction.request.url,
+            let urlComponents = URLComponents(string: url.absoluteString),
+            urlComponents.path == "/oauth/authorize/native",
+            let items = urlComponents.queryItems,
+            let codeItem = items.first(where: { $0.name == "code" })
+        {
+            return codeItem.value
+        } else {
             return nil
         }
-        guard let urlComponents = URLComponents(string: url.absoluteString) else {
-            print("URL components not found from: ", url.absoluteString)
-            return nil
-        }
-        
-        guard urlComponents.path == "/oauth/authorize/native" else {
-            print("URLComponents.path not found")
-            return nil
-        }
-        
-        guard let codeItem = urlComponents.queryItems?.first(where: { $0.name == "code" }) else {
-            print("codeItem not found")
-            return nil
-        }
-        
-        return codeItem.value
     }
 }
