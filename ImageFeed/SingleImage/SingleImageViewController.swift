@@ -46,7 +46,7 @@ final class SingleImageViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        .lightContent
     }
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {

@@ -297,6 +297,7 @@
         <!--Navigation Controller-->
         <scene sceneID="dhr-5d-ivg">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sbz-zu-lwT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="rJT-S6-Y0g" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="tab_editorial_active" id="fjw-aB-hQ8"/>
                     <toolbarItems/>
@@ -313,7 +314,6 @@
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="jnn-DN-ZUh"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="sbz-zu-lwT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-25" y="-483"/>
         </scene>
