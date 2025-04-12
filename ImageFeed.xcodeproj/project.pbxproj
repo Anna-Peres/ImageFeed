@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		AD3FCEC62DA42BF800CB8CBD /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = AD3FCEC52DA42BF800CB8CBD /* ProgressHUD */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		ADE9EE5C2D69F80700689BAE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -75,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AD3FCEC62DA42BF800CB8CBD /* ProgressHUD in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,6 +138,7 @@
 			);
 			name = ImageFeed;
 			packageProductDependencies = (
+				AD3FCEC52DA42BF800CB8CBD /* ProgressHUD */,
 			);
 			productName = ImageFeed;
 			productReference = ADE9EE452D69F80600689BAE /* ImageFeed.app */;
@@ -210,6 +216,9 @@
 			);
 			mainGroup = ADE9EE3C2D69F80600689BAE;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				AD3FCE8E2DA42A7D00CB8CBD /* XCRemoteSwiftPackageReference "ProgressHUD" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = ADE9EE462D69F80600689BAE /* Products */;
 			projectDirPath = "";
@@ -581,6 +590,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		AD3FCE8E2DA42A7D00CB8CBD /* XCRemoteSwiftPackageReference "ProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/relatedcode/ProgressHUD";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 14.1.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AD3FCEC52DA42BF800CB8CBD /* ProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AD3FCE8E2DA42A7D00CB8CBD /* XCRemoteSwiftPackageReference "ProgressHUD" */;
+			productName = ProgressHUD;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = ADE9EE3D2D69F80600689BAE /* Project object */;
 }
