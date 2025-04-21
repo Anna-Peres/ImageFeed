@@ -8,6 +8,10 @@
 import UIKit
 
 final class ProfileViewController: UIViewController {
+    private var profileService = ProfileService.shared
+    private var nameLabel: UILabel?
+    private var loginNameLabel: UILabel?
+    private var descriptionLabel: UILabel?
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
@@ -16,11 +20,13 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypBlack
+        
         configureProfileImage()
         configureNameLabel()
         configureLoginNameLabel()
         configureDescriptionLabel()
         configureLogoutButton()
+        updateProfileDetails()
     }
     
     @IBAction private func didTapLogoutButton() {
@@ -41,7 +47,8 @@ final class ProfileViewController: UIViewController {
     }
     
     private func configureNameLabel() {
-        let nameLabel = UILabel()
+        nameLabel = UILabel()
+        guard let nameLabel else { return }
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(nameLabel)
         let nameLabelStrokeTextAttributes = [
@@ -58,7 +65,8 @@ final class ProfileViewController: UIViewController {
     }
     
     private func configureLoginNameLabel() {
-        let loginNameLabel = UILabel()
+        loginNameLabel = UILabel()
+        guard let loginNameLabel else { return }
         loginNameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(loginNameLabel)
         let loginNameLabelStrokeTextAttributes = [
@@ -75,7 +83,8 @@ final class ProfileViewController: UIViewController {
     }
     
     private func configureDescriptionLabel() {
-        let descriptionLabel = UILabel()
+        descriptionLabel = UILabel()
+        guard let descriptionLabel else { return }
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(descriptionLabel)
         let descriptionLabelStrokeTextAttributes = [
@@ -96,7 +105,7 @@ final class ProfileViewController: UIViewController {
             with: UIImage(named: "Logout Image")!,
             target: self,
             action: #selector(Self.didTapLogoutButton)
-            )
+        )
         view.addSubview(logoutButton)
         logoutButton.tintColor = .ypRed
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
@@ -105,6 +114,19 @@ final class ProfileViewController: UIViewController {
             logoutButton.widthAnchor.constraint(equalToConstant: 44),
             logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             logoutButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 45)
-            ])
+        ])
+    }
+    
+    private func updateProfileDetails() {
+        guard let profile = profileService.profile else { return }
+        
+        guard let nameLabel else { return }
+        nameLabel.text = profile.name
+        
+        guard let loginNameLabel else { return }
+        loginNameLabel.text = profile.loginName
+        
+        guard let descriptionLabel else { return }
+        descriptionLabel.text = profile.bio
     }
 }
