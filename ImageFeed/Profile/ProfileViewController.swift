@@ -12,6 +12,7 @@ final class ProfileViewController: UIViewController {
     private var nameLabel: UILabel?
     private var loginNameLabel: UILabel?
     private var descriptionLabel: UILabel?
+    private let oauth2TokenStorage = OAuth2TokenStorage()
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
@@ -26,6 +27,12 @@ final class ProfileViewController: UIViewController {
         configureLoginNameLabel()
         configureDescriptionLabel()
         configureLogoutButton()
+        
+        guard let token = oauth2TokenStorage.token else {
+            print("Authorization token not found")
+            return
+        }
+        
         updateProfileDetails()
     }
     

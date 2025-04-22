@@ -16,7 +16,6 @@ final class ProfileService {
     private init() {}
     private let session = URLSession.shared
     private var task: URLSessionTask?
-    private var profileResult: ProfileResult?
     private(set) var profile: Profile?
     
     func fetchProfile(_ token: String, handler: @escaping (Result<Profile, Error>) -> Void) {
