@@ -27,7 +27,7 @@ final class ProfileService {
         request.httpMethod = "GET"
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
-        let task = session.profileData(for: request) { [weak self] (result: Result<ProfileResult, Error>) in
+        let task = session.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>) in
             switch result {
             case .success(let decodedResponse):
                 let user = Profile(username: decodedResponse.username,
@@ -37,6 +37,7 @@ final class ProfileService {
                 self?.profile = user
                 handler(.success(user))
             case .failure(let error):
+                print("[ProfileService]: \(error.localizedDescription)")
                 handler(.failure(error))
             }
             self?.task = nil
@@ -44,3 +45,36 @@ final class ProfileService {
         task.resume()
     }
 }
+
+struct ProfileResult: Codable {
+    let username: String
+    let firstName: String
+    let lastName: String?
+    let bio: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case username = "username"
+        case firstName = "first_name"
+        case lastName = "last_name"
+        case bio = "bio"
+    }
+    
+    static func decode(from data: Data) -> Result<ProfileResult, Error> {
+        let decoder = JSONDecoder()
+        do {
+            let decodedResponse = try decoder.decode(ProfileResult.self, from: data)
+            return .success(decodedResponse)
+        } catch {
+            print("Error in data decoding")
+            return .failure(error)
+        }
+    }
+}
+
+struct Profile: Decodable {
+    var username: String
+    var name: String
+    var loginName: String
+    var bio: String
+}
+

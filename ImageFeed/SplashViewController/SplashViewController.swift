@@ -68,7 +68,7 @@ extension SplashViewController: AuthViewControllerDelegate {
         
         guard let token = storage.token else {
             return
-        }
+}
         
         fetchProfile(token)
     }
@@ -81,11 +81,18 @@ extension SplashViewController: AuthViewControllerDelegate {
             guard let self = self else { return }
             
             switch result {
-            case .success:
+            case .success(let profile):
+                ProfileImageService.shared.fetchProfileImageURL(username: profile.username) { result in
+                    switch result {
+                    case .success(let smallProfileImage):
+                        print(smallProfileImage)
+                    case .failure(let error):
+                        print("[SplashViewController] - \(error.localizedDescription)")
+                    }
+                }
                 self.switchToTabBarController()
-                
             case .failure:
-                // TODO [Sprint 11] Покажите ошибку получения профиля
+                print("Error loading profile")
                 break
             }
         }

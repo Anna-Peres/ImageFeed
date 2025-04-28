@@ -6,13 +6,19 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     private var profileService = ProfileService.shared
+    private var profileImageService = ProfileImageService.shared
+    private let storage = OAuth2TokenStorage()
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
     private var nameLabel: UILabel?
     private var loginNameLabel: UILabel?
     private var descriptionLabel: UILabel?
-    private let oauth2TokenStorage = OAuth2TokenStorage()
+    private var logoutButton: UIButton?
+    private var profileImageView: UIImageView?
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
@@ -28,12 +34,23 @@ final class ProfileViewController: UIViewController {
         configureDescriptionLabel()
         configureLogoutButton()
         
-        guard let token = oauth2TokenStorage.token else {
+        guard storage.token != nil else {
             print("Authorization token not found")
             return
         }
-        
         updateProfileDetails()
+        
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()
+            }
+       
+        updateAvatar()
     }
     
     @IBAction private func didTapLogoutButton() {
@@ -42,7 +59,8 @@ final class ProfileViewController: UIViewController {
     
     private func configureProfileImage() {
         let profileImage = UIImage(named: "Profile Image")
-        let profileImageView = UIImageView(image: profileImage)
+        profileImageView = UIImageView(image: profileImage)
+        guard let profileImageView else { return }
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(profileImageView)
         NSLayoutConstraint.activate([
@@ -108,11 +126,12 @@ final class ProfileViewController: UIViewController {
     }
     
     private func configureLogoutButton() {
-        let logoutButton = UIButton.systemButton(
+        logoutButton = UIButton.systemButton(
             with: UIImage(named: "Logout Image")!,
             target: self,
             action: #selector(Self.didTapLogoutButton)
         )
+        guard let logoutButton else { return }
         view.addSubview(logoutButton)
         logoutButton.tintColor = .ypRed
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
@@ -135,5 +154,14 @@ final class ProfileViewController: UIViewController {
         
         guard let descriptionLabel else { return }
         descriptionLabel.text = profile.bio
+    }
+    
+    private func updateAvatar() {
+        guard let profileImageURL = profileImageService.avatarURL,
+              let profileImageView = profileImageView
+        else { return }
+        let imageUrl = URL(string: profileImageURL)
+        profileImageView.kf.setImage(with: imageUrl,
+                                     placeholder: UIImage(named: "placeholder.jpeg"))
     }
 }
