@@ -47,7 +47,7 @@ final class SplashViewController: UIViewController {
             self.present(authViewController, animated: true)
         }
     }
-
+    
     private func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first else {
             assertionFailure("Invalid window configuration")
@@ -80,7 +80,7 @@ extension SplashViewController: AuthViewControllerDelegate {
         
         guard let token = storage.token else {
             return
-}
+        }
         
         fetchProfile(token)
     }
