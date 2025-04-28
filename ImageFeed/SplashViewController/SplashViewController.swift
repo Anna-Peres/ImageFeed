@@ -8,20 +8,20 @@
 import UIKit
 
 final class SplashViewController: UIViewController {
-    private let ShowAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     private let storage = OAuth2TokenStorage()
-    private let profileService = ProfileService.shared
+    private let viewController = AuthViewController()
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    private var logoImageView: UIImageView?
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .ypBlack
         
-        if let token = storage.token {
-            fetchProfile(token)
-            switchToTabBarController()
-        } else {
-            // Show Auth Screen
-            performSegue(withIdentifier: ShowAuthenticationScreenSegueIdentifier, sender: nil)
-        }
+        configureImage()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -31,10 +31,22 @@ final class SplashViewController: UIViewController {
         print(NSHomeDirectory())
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        .lightContent
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if let token = storage.token {
+            fetchProfile(token)
+        } else {
+            // Show Auth Screen
+            let storyboard = UIStoryboard(name: "Main", bundle: .main)
+            let viewController = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController
+            guard let authViewController = viewController else { return }
+            authViewController.delegate = self
+            authViewController.modalPresentationStyle = .fullScreen
+            self.present(authViewController, animated: true)
+        }
     }
-    
+
     private func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first else {
             assertionFailure("Invalid window configuration")
@@ -44,20 +56,19 @@ final class SplashViewController: UIViewController {
             .instantiateViewController(withIdentifier: "TabBarViewController")
         window.rootViewController = tabBarController
     }
-}
-
-extension SplashViewController {
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == ShowAuthenticationScreenSegueIdentifier {
-            guard
-                let navigationController = segue.destination as? UINavigationController,
-                let viewController = navigationController.viewControllers[0] as? AuthViewController
-            else { assertionFailure("Failed to prepare for \(ShowAuthenticationScreenSegueIdentifier)")
-                return }
-            viewController.delegate = self
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
+    
+    private func configureImage() {
+        let logoImage = UIImage(named: "splash_screen_logo")
+        logoImageView = UIImageView(image: logoImage)
+        guard let logoImageView else { return }
+        logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(logoImageView)
+        NSLayoutConstraint.activate([
+            logoImageView.heightAnchor.constraint(equalToConstant: 78),
+            logoImageView.widthAnchor.constraint(equalToConstant: 75),
+            logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logoImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
     }
 }
 
@@ -75,7 +86,7 @@ extension SplashViewController: AuthViewControllerDelegate {
     
     private func fetchProfile(_ token: String) {
         UIBlockingProgressHUD.show()
-        profileService.fetchProfile(token) { [weak self] result in
+        ProfileService.shared.fetchProfile(token) { [weak self] result in
             UIBlockingProgressHUD.dismiss()
             
             guard let self = self else { return }
