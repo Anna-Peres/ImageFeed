@@ -36,6 +36,7 @@ final class SplashViewController: UIViewController {
         
         if let token = storage.token {
             fetchProfile(token)
+            switchToTabBarController()
         } else {
             // Show Auth Screen
             let storyboard = UIStoryboard(name: "Main", bundle: .main)
@@ -66,8 +67,8 @@ final class SplashViewController: UIViewController {
         NSLayoutConstraint.activate([
             logoImageView.heightAnchor.constraint(equalToConstant: 78),
             logoImageView.widthAnchor.constraint(equalToConstant: 75),
-            logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            logoImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            logoImageView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            logoImageView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor)
         ])
     }
 }
