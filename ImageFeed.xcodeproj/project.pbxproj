@@ -10,6 +10,7 @@
 		AD06A8022DBA851F00DC72DC /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = AD06A8012DBA851F00DC72DC /* Kingfisher */; };
 		AD06AB2E2DBFE61A00DC72DC /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = AD06AB2D2DBFE61A00DC72DC /* SwiftKeychainWrapper */; };
 		AD3FCEC62DA42BF800CB8CBD /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = AD3FCEC52DA42BF800CB8CBD /* ProgressHUD */; };
+		ADB4DB792DC0B64D009E4B19 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADB4DB782DC0B64D009E4B19 /* WebKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,6 +31,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		ADB4DB782DC0B64D009E4B19 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		ADE9EE452D69F80600689BAE /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADE9EE5B2D69F80700689BAE /* ImageFeedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageFeedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADE9EE652D69F80700689BAE /* ImageFeedUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageFeedUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -83,6 +85,7 @@
 			files = (
 				AD06A8022DBA851F00DC72DC /* Kingfisher in Frameworks */,
 				AD3FCEC62DA42BF800CB8CBD /* ProgressHUD in Frameworks */,
+				ADB4DB792DC0B64D009E4B19 /* WebKit.framework in Frameworks */,
 				AD06AB2E2DBFE61A00DC72DC /* SwiftKeychainWrapper in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -104,10 +107,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		ADB4DB772DC0B64C009E4B19 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ADB4DB782DC0B64D009E4B19 /* WebKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		ADE9EE3C2D69F80600689BAE = {
 			isa = PBXGroup;
 			children = (
 				ADE9EE472D69F80600689BAE /* ImageFeed */,
+				ADB4DB772DC0B64C009E4B19 /* Frameworks */,
 				ADE9EE462D69F80600689BAE /* Products */,
 			);
 			sourceTree = "<group>";
