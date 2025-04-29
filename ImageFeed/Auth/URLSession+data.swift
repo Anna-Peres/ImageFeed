@@ -14,7 +14,9 @@ enum NetworkError: Error {
 }
 
 extension URLSession {
-    func data(
+    private static let decoder = JSONDecoder()
+    
+    func dataTaskWithResult(
         for request: URLRequest,
         completion: @escaping (Result<Data, Error>) -> Void
     ) -> URLSessionTask {
@@ -39,20 +41,17 @@ extension URLSession {
         })
         return task
     }
-}
-
-extension URLSession {
+    
     func objectTask<T: Decodable>(
         for request: URLRequest,
         completion: @escaping (Result<T, Error>) -> Void
     ) -> URLSessionTask {
-        let decoder = JSONDecoder()
-        let task = data(for: request) { (result: Result<Data, Error>) in
+        let task = dataTaskWithResult(for: request) { (result: Result<Data, Error>) in
             // TODO [Sprint 11] Напишите реализацию c декодированием Data в тип T
             switch result {
             case .success(let data):
                 do {
-                    let decodedResponse = try decoder.decode(T.self, from: data)
+                    let decodedResponse = try Self.decoder.decode(T.self, from: data)
                     completion(.success(decodedResponse))
                 } catch {
                     print("Error decoding: \(error.localizedDescription), data: \(String(data: data, encoding: .utf8) ?? "")")
@@ -66,4 +65,4 @@ extension URLSession {
         return task
     }
 }
-    
+

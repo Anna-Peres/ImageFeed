@@ -9,16 +9,18 @@ import UIKit
 import Kingfisher
 
 final class ProfileViewController: UIViewController {
+    // MARK: - Services
     private var profileService = ProfileService.shared
     private var profileImageService = ProfileImageService.shared
     private let storage = OAuth2TokenStorage()
     private var profileImageServiceObserver: NSObjectProtocol?
     
-    private var nameLabel: UILabel?
-    private var loginNameLabel: UILabel?
-    private var descriptionLabel: UILabel?
-    private var logoutButton: UIButton?
-    private var profileImageView: UIImageView?
+    // MARK: - UI Elements
+    private var nameLabel = UILabel()
+    private var loginNameLabel = UILabel()
+    private var descriptionLabel = UILabel()
+    private var logoutButton = UIButton ()
+    private var profileImageView = UIImageView()
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
@@ -59,7 +61,6 @@ final class ProfileViewController: UIViewController {
     private func configureProfileImage() {
         let profileImage = UIImage(named: "Profile Image")
         profileImageView = UIImageView(image: profileImage)
-        guard let profileImageView else { return }
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(profileImageView)
         NSLayoutConstraint.activate([
@@ -71,8 +72,6 @@ final class ProfileViewController: UIViewController {
     }
     
     private func configureNameLabel() {
-        nameLabel = UILabel()
-        guard let nameLabel else { return }
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(nameLabel)
         let nameLabelStrokeTextAttributes = [
@@ -89,8 +88,6 @@ final class ProfileViewController: UIViewController {
     }
     
     private func configureLoginNameLabel() {
-        loginNameLabel = UILabel()
-        guard let loginNameLabel else { return }
         loginNameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(loginNameLabel)
         let loginNameLabelStrokeTextAttributes = [
@@ -107,8 +104,6 @@ final class ProfileViewController: UIViewController {
     }
     
     private func configureDescriptionLabel() {
-        descriptionLabel = UILabel()
-        guard let descriptionLabel else { return }
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(descriptionLabel)
         let descriptionLabelStrokeTextAttributes = [
@@ -125,12 +120,12 @@ final class ProfileViewController: UIViewController {
     }
     
     private func configureLogoutButton() {
+        guard let logoutImage = UIImage(named: "Logout Image") else { return }
         logoutButton = UIButton.systemButton(
-            with: UIImage(named: "Logout Image")!,
+            with: logoutImage,
             target: self,
             action: #selector(Self.didTapLogoutButton)
         )
-        guard let logoutButton else { return }
         view.addSubview(logoutButton)
         logoutButton.tintColor = .ypRed
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
@@ -145,20 +140,13 @@ final class ProfileViewController: UIViewController {
     private func updateProfileDetails() {
         guard let profile = profileService.profile else { return }
         
-        guard let nameLabel else { return }
         nameLabel.text = profile.name
-        
-        guard let loginNameLabel else { return }
         loginNameLabel.text = profile.loginName
-        
-        guard let descriptionLabel else { return }
         descriptionLabel.text = profile.bio
     }
     
     private func updateAvatar() {
-        guard let profileImageURL = profileImageService.avatarURL,
-              let profileImageView = profileImageView
-        else { return }
+        guard let profileImageURL = profileImageService.avatarURL else { return }
         let imageUrl = URL(string: profileImageURL)
         profileImageView.kf.setImage(with: imageUrl,
                                      placeholder: UIImage(named: "placeholder.jpeg"))

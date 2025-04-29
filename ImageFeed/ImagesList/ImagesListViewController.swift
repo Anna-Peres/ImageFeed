@@ -8,18 +8,18 @@
 import UIKit
 
 final class ImagesListViewController: UIViewController {
-    @IBOutlet private var tableView: UITableView!
-    
+    // MARK: - Services
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
-    
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
-    
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
         formatter.timeStyle = .none
         return formatter
     }()
+    
+    // MARK: - UI Elements
+    @IBOutlet private var tableView: UITableView!
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent

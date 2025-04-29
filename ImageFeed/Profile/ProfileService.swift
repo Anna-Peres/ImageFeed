@@ -59,17 +59,6 @@ struct ProfileResult: Codable {
         case lastName = "last_name"
         case bio = "bio"
     }
-    
-    static func decode(from data: Data) -> Result<ProfileResult, Error> {
-        let decoder = JSONDecoder()
-        do {
-            let decodedResponse = try decoder.decode(ProfileResult.self, from: data)
-            return .success(decodedResponse)
-        } catch {
-            print("Error in data decoding")
-            return .failure(error)
-        }
-    }
 }
 
 struct Profile: Decodable {

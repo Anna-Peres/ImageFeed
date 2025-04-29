@@ -8,9 +8,10 @@
 import UIKit
 
 final class SplashViewController: UIViewController {
+    // MARK: - Services
     private let storage = OAuth2TokenStorage()
-    private let viewController = AuthViewController()
     
+    // MARK: - UI Elements
     private var logoImageView: UIImageView?
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

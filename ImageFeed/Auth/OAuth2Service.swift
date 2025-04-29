@@ -18,6 +18,39 @@ final class OAuth2Service {
     private var task: URLSessionTask?
     private var lastCode: String?
     
+   
+    func fetchOAuthToken(code: String, handler: @escaping (Result<String, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        guard lastCode != code else {
+            handler(.failure(AuthServiceError.invalidRequest))
+            return
+        }
+        
+        task?.cancel()
+        lastCode = code
+        
+        guard let request = makeOAuthTokenRequest(code: code) else {
+            handler(.failure(AuthServiceError.invalidRequest))
+            return
+        }
+        
+        let currentTask = session.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let responseBody):
+                    handler(.success(responseBody.accessToken))
+                case .failure(let error):
+                    handler(.failure(error))
+                    print("[OAuth2Service]: \(error.localizedDescription)")
+                }
+                self?.task = nil
+                self?.lastCode = nil
+            }
+        }
+        self.task = currentTask
+        task?.resume()
+    }
+    
     private func makeOAuthTokenRequest(code: String) -> URLRequest? {
         let baseURL = URL(string: "https://unsplash.com")
         guard let url = URL(
@@ -37,40 +70,4 @@ final class OAuth2Service {
         return request
     }
     
-    func fetchOAuthToken(code: String, handler: @escaping (Result<String, Error>) -> Void) {
-        assert(Thread.isMainThread)
-        guard lastCode != code else {
-            handler(.failure(AuthServiceError.invalidRequest))
-            return
-        }
-        
-        task?.cancel()
-        lastCode = code
-        
-        guard let request = makeOAuthTokenRequest(code: code) else {
-            handler(.failure(AuthServiceError.invalidRequest))
-            return
-        }
-        
-        let task = session.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let responseBody):
-                    switch result {
-                    case .success(let responseBody):
-                        handler(.success(responseBody.accessToken))
-                    case .failure(let error):
-                        handler(.failure(error))
-                    }
-                case .failure(let error):
-                    print("[OAuth2Service]: \(error.localizedDescription)")
-                    handler(.failure(error))
-                }
-                self?.task = nil
-                self?.lastCode = nil
-            }
-        }
-        self.task = task
-        task.resume()
-    }
 }

@@ -18,11 +18,14 @@ protocol WebViewViewControllerDelegate: AnyObject {
 }
 
 final class WebViewViewController: UIViewController {
+    // MARK: - Services
+    private var estimatedProgressObservation: NSKeyValueObservation?
+    weak var delegate: WebViewViewControllerDelegate?
+    
+    // MARK: - UI Elements
     @IBOutlet private var webView: WKWebView!
     @IBOutlet private var progressView: UIProgressView!
-    private var estimatedProgressObservation: NSKeyValueObservation?
-    
-    weak var delegate: WebViewViewControllerDelegate?
+   
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)

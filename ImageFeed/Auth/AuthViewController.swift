@@ -8,9 +8,13 @@
 import UIKit
 import ProgressHUD
 
+// MARK: - Protocol
+
 protocol AuthViewControllerDelegate: AnyObject {
     func didAuthenticate(_ vc: AuthViewController)
 }
+
+// MARK: - AuthViewController
 
 final class AuthViewController: UIViewController {
     private let showWebViewSegueIdentifier = "ShowWebView"
@@ -32,14 +36,16 @@ final class AuthViewController: UIViewController {
     }
 }
 
+// MARK: - WebViewViewControllerDelegate
+
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         vc.dismiss(animated: true)
         UIBlockingProgressHUD.show()
-        oauth2Service.fetchOAuthToken(code: code) { [weak self] token in
+        oauth2Service.fetchOAuthToken(code: code) { [weak self] result in
             guard let self = self else { return }
             UIBlockingProgressHUD.dismiss()
-            switch token {
+            switch result {
             case .success(let result):
                 self.storage.token = result
                 self.delegate?.didAuthenticate(self)

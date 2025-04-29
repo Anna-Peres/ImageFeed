@@ -59,19 +59,4 @@ struct UserResult: Codable {
     enum CodingKeys: String, CodingKey {
         case profileImage = "profile_image"
     }
-    
-    static func decode(from data: Data) -> Result<String, Error> {
-        let decoder = JSONDecoder()
-        do {
-            let decodedResponse = try decoder.decode(UserResult.self, from: data)
-            
-            guard let profileImage = decodedResponse.profileImage else { return .failure(ProfileImageServiceError.invalidRequest) }
-            guard let smallProfileImage = profileImage["small"] else { return .failure(ProfileImageServiceError.invalidRequest)}
-            
-            return .success(smallProfileImage)
-        } catch {
-            print("Error in data decoding")
-            return .failure(error)
-        }
-    }
 }
