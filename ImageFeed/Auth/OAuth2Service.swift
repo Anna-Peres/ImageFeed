@@ -7,30 +7,51 @@
 
 import Foundation
 
+enum AuthServiceError: Error {
+    case invalidRequest
+}
+
 final class OAuth2Service {
     static let shared = OAuth2Service()
     private init() {}
+    private let session = URLSession.shared
+    private var task: URLSessionTask?
+    private var lastCode: String?
+    
    
     func fetchOAuthToken(code: String, handler: @escaping (Result<String, Error>) -> Void) {
-        let request = makeOAuthTokenRequest(code: code)
-        let session = URLSession.shared
-        let task = session.data(for: request) { result in
-            switch result {
-            case .success(let data):
-                switch OAuthTokenResponseBody.decode(from: data) {
+        assert(Thread.isMainThread)
+        guard lastCode != code else {
+            handler(.failure(AuthServiceError.invalidRequest))
+            return
+        }
+        
+        task?.cancel()
+        lastCode = code
+        
+        guard let request = makeOAuthTokenRequest(code: code) else {
+            handler(.failure(AuthServiceError.invalidRequest))
+            return
+        }
+        
+        let currentTask = session.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+            DispatchQueue.main.async {
+                switch result {
                 case .success(let responseBody):
                     handler(.success(responseBody.accessToken))
                 case .failure(let error):
                     handler(.failure(error))
+                    print("[OAuth2Service]: \(error.localizedDescription)")
                 }
-            case .failure(let error):
-                handler(.failure(error))
+                self?.task = nil
+                self?.lastCode = nil
             }
         }
-        task.resume()
+        self.task = currentTask
+        task?.resume()
     }
     
-    func makeOAuthTokenRequest(code: String) -> URLRequest {
+    private func makeOAuthTokenRequest(code: String) -> URLRequest? {
         let baseURL = URL(string: "https://unsplash.com")
         guard let url = URL(
             string: "/oauth/token"
@@ -41,10 +62,12 @@ final class OAuth2Service {
             + "&&grant_type=authorization_code",
             relativeTo: baseURL
         ) else {
-            preconditionFailure("Unable to construct url")
+            assertionFailure("Unable to construct url")
+            return nil
         }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         return request
     }
+    
 }
