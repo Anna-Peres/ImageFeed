@@ -25,7 +25,8 @@ final class ProfileImageService {
         task?.cancel()
         
         let url = URL(string: "https://api.unsplash.com//users/\(username)")
-        var request = URLRequest(url: url!)
+        guard let url else { return }
+        var request = URLRequest(url: url)
         request.httpMethod = "GET"
         guard let token = storage.token else { return }
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
