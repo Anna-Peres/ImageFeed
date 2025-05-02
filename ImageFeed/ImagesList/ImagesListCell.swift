@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 struct ImagesListCellViewModel {
     let image: UIImage
@@ -24,5 +25,10 @@ final class ImagesListCell: UITableViewCell {
         cellImage.image = model.image
         likeButton.isSelected = model.isLiked
         dateLabel.text = model.date
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        cellImage.kf.cancelDownloadTask()
     }
 }
