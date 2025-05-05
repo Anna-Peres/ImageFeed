@@ -102,8 +102,8 @@ extension ImagesListViewController {
         let imageUrl = URL(string: image.thumbImageURL)
         cell.cellImage.kf.setImage(with: imageUrl, placeholder: UIImage(named: "placeholder.jpeg"))
         cell.cellImage.kf.indicatorType = .activity
-        
-        cell.dateLabel.text = dateFormatter.string(from: Date())
+        guard let date = image.createdAt else { return }
+        cell.dateLabel.text = dateFormatter.string(from: date)
     }
     
     private func loadImages() {

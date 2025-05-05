@@ -43,13 +43,13 @@ final class ImagesListService {
             if let data {
                 do {
                     let responseImages = try decoder.decode([ResponseImage].self, from: data)
-                    
+
                     images.append(
                         contentsOf: responseImages.map {
                             .init(
                                 id: $0.id,
                                 size: CGSize(width: $0.width, height: $0.height),
-                                createdAt: $0.createdAt,
+                                createdAt: ISO8601DateFormatter().date(from: $0.createdAt ?? ""),
                                 welcomeDescription: $0.description,
                                 thumbImageURL: $0.urls.thumb,
                                 largeImageURL: $0.urls.regular,
@@ -103,7 +103,7 @@ final class ImagesListService {
     struct Image {
         let id: String
         let size: CGSize
-        let createdAt: String?
+        let createdAt: Date?
         let welcomeDescription: String?
         let thumbImageURL: String
         let largeImageURL: String
@@ -124,7 +124,6 @@ final class ImagesListService {
     }
     
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
-        assert(Thread.isMainThread)
         task?.cancel()
         
         var components = URLComponents(string: "https://api.unsplash.com/photos/\(photoId)/like")
@@ -142,33 +141,33 @@ final class ImagesListService {
             request.httpMethod = "DELETE"
         }
       
-        task = session.dataTask(with: request) { [weak self] data, response, error in
-            
+        task = session.dataTaskWithResult(for: request) { [weak self] result in
             guard let self else { return }
             
-            if let error {
-                print("[ImageListService]: task error")
-            }
-            
-            if data != nil {
-                if let index = self.images.firstIndex(where: { $0.id == photoId }) {
-                    // Текущий элемент
-                    let photo = self.images[index]
-                    // Копия элемента с инвертированным значением isLiked.
-                    let newPhoto = Image(
-                        id: photo.id,
-                        size: photo.size,
-                        createdAt: photo.createdAt,
-                        welcomeDescription: photo.welcomeDescription,
-                        thumbImageURL: photo.thumbImageURL,
-                        largeImageURL: photo.largeImageURL,
-                        isLiked: !photo.isLiked
-                    )
-                    // Заменяем элемент в массиве.
-                    self.images[index] = newPhoto
+            switch result {
+            case .success(_):
+                DispatchQueue.main.async {
+                    if let index = self.images.firstIndex(where: { $0.id == photoId }) {
+                        // Текущий элемент
+                        let photo = self.images[index]
+                        // Копия элемента с инвертированным значением isLiked.
+                        let newPhoto = Image(
+                            id: photo.id,
+                            size: photo.size,
+                            createdAt: photo.createdAt,
+                            welcomeDescription: photo.welcomeDescription,
+                            thumbImageURL: photo.thumbImageURL,
+                            largeImageURL: photo.largeImageURL,
+                            isLiked: !photo.isLiked
+                        )
+                        // Заменяем элемент в массиве.
+                        self.images[index] = newPhoto
+                    }
+                    completion(.success(()))
                 }
-            } else {
-                print("[ImageListService]: something went wrong")
+            case .failure(let error):
+                print("[ImageListService]: error while changing like: \(error)")
+                completion(.failure(error))
             }
             
             task = nil
