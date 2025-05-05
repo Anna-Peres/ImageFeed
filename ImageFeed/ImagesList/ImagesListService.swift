@@ -11,7 +11,6 @@ enum ImageListServiceError: Error {
 }
 
 final class ImagesListService {
-    private var lastLoadedPage: Int?
     private let session = URLSession.shared
     private var task: URLSessionTask?
     private let storage = OAuth2TokenStorage()
@@ -125,6 +124,9 @@ final class ImagesListService {
     }
     
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        task?.cancel()
+        
         var components = URLComponents(string: "https://api.unsplash.com/photos/\(photoId)/like")
         components?.queryItems = [URLQueryItem(name: "id", value: photoId)]
         guard
@@ -139,25 +141,16 @@ final class ImagesListService {
         } else {
             request.httpMethod = "DELETE"
         }
-        
-        guard task == nil else { return }
-        
-        
-        let completionOnMainQueue: (Error?) -> Void = { error in
-            DispatchQueue.main.async {
-                print("[ImagesListService] - error")
-            }
-        }
-        
+      
         task = session.dataTask(with: request) { [weak self] data, response, error in
             
             guard let self else { return }
             
             if let error {
-                completionOnMainQueue(error)
+                print("[ImageListService]: task error")
             }
             
-            if let data {
+            if data != nil {
                 if let index = self.images.firstIndex(where: { $0.id == photoId }) {
                     // Текущий элемент
                     let photo = self.images[index]
@@ -173,9 +166,7 @@ final class ImagesListService {
                     )
                     // Заменяем элемент в массиве.
                     self.images[index] = newPhoto
-                    completionOnMainQueue(nil)
                 }
-                completionOnMainQueue(error)
             } else {
                 print("[ImageListService]: something went wrong")
             }
