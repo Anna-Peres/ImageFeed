@@ -32,7 +32,7 @@ final class ImagesListService {
                 completion(error)
             }
         }
-
+        
         task = session.dataTask(with: request) { [weak self] data, response, error in
             
             guard let self else { return }
@@ -43,7 +43,6 @@ final class ImagesListService {
             
             if let data {
                 do {
-                    print(String(data: data, encoding: .utf8) ?? "Data not found")
                     let responseImages = try decoder.decode([ResponseImage].self, from: data)
                     
                     images.append(
@@ -124,4 +123,66 @@ final class ImagesListService {
         
         return request
     }
+    
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        var components = URLComponents(string: "https://api.unsplash.com/photos/\(photoId)/like")
+        components?.queryItems = [URLQueryItem(name: "id", value: photoId)]
+        guard
+            let url = components?.url,
+            let token = storage.token
+        else { return }
+        var request = URLRequest(url: url)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        if isLike {
+            request.httpMethod = "POST"
+        } else {
+            request.httpMethod = "DELETE"
+        }
+        
+        guard task == nil else { return }
+        
+        
+        let completionOnMainQueue: (Error?) -> Void = { error in
+            DispatchQueue.main.async {
+                print("[ImagesListService] - error")
+            }
+        }
+        
+        task = session.dataTask(with: request) { [weak self] data, response, error in
+            
+            guard let self else { return }
+            
+            if let error {
+                completionOnMainQueue(error)
+            }
+            
+            if let data {
+                if let index = self.images.firstIndex(where: { $0.id == photoId }) {
+                    // Текущий элемент
+                    let photo = self.images[index]
+                    // Копия элемента с инвертированным значением isLiked.
+                    let newPhoto = Image(
+                        id: photo.id,
+                        size: photo.size,
+                        createdAt: photo.createdAt,
+                        welcomeDescription: photo.welcomeDescription,
+                        thumbImageURL: photo.thumbImageURL,
+                        largeImageURL: photo.largeImageURL,
+                        isLiked: !photo.isLiked
+                    )
+                    // Заменяем элемент в массиве.
+                    self.images[index] = newPhoto
+                    completionOnMainQueue(nil)
+                }
+                completionOnMainQueue(error)
+            } else {
+                print("[ImageListService]: something went wrong")
+            }
+            
+            task = nil
+        }
+        task?.resume()
+    }
 }
+

@@ -28,8 +28,6 @@ final class SplashViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNeedsStatusBarAppearanceUpdate()
-        
-        print(NSHomeDirectory())
     }
     
     override func viewDidAppear(_ animated: Bool) {
