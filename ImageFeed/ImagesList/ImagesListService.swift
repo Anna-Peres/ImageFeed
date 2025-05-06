@@ -52,7 +52,7 @@ final class ImagesListService {
                                 createdAt: ISO8601DateFormatter().date(from: $0.createdAt ?? ""),
                                 welcomeDescription: $0.description,
                                 thumbImageURL: $0.urls.thumb,
-                                largeImageURL: $0.urls.regular,
+                                fullImageURL: $0.urls.full,
                                 isLiked: $0.likedByUser)
                         }
                     )
@@ -97,7 +97,7 @@ final class ImagesListService {
     
     struct ResponseImageUrls: Decodable {
         let thumb: String
-        let regular: String
+        let full: String
     }
     
     struct Image {
@@ -106,7 +106,7 @@ final class ImagesListService {
         let createdAt: Date?
         let welcomeDescription: String?
         let thumbImageURL: String
-        let largeImageURL: String
+        let fullImageURL: String
         let isLiked: Bool
     }
     
@@ -157,7 +157,7 @@ final class ImagesListService {
                             createdAt: photo.createdAt,
                             welcomeDescription: photo.welcomeDescription,
                             thumbImageURL: photo.thumbImageURL,
-                            largeImageURL: photo.largeImageURL,
+                            fullImageURL: photo.fullImageURL,
                             isLiked: !photo.isLiked
                         )
                         // Заменяем элемент в массиве.
