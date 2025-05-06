@@ -11,7 +11,7 @@ import Kingfisher
 final class ImagesListViewController: UIViewController {
     // MARK: - Services
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
-    private let imagesListService = ImagesListService()
+    private let imagesListService = ImagesListService.shared
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     
     private lazy var dateFormatter: DateFormatter = {
@@ -122,21 +122,15 @@ extension ImagesListViewController: ImagesListCellDelegate {
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         let image = imagesListService.images[indexPath.row]
-        // Покажем лоадер
         UIBlockingProgressHUD.show()
         imagesListService.changeLike(photoId: image.id, isLike: !image.isLiked) { result in
             switch result {
             case .success:
-                // Синхронизируем массив картинок с сервисом
                 let images = self.imagesListService.images
-                // Изменим индикацию лайка картинки
-                cell.setIsLiked(images[indexPath.row].isLiked)
-                // Уберём лоадер
+                cell.setIsLiked(images[indexPath.row].isLiked)   
                 UIBlockingProgressHUD.dismiss()
             case .failure:
-                // Уберём лоадер
                 UIBlockingProgressHUD.dismiss()
-                // Покажем, что что-то пошло не так
                 // TODO: Показать ошибку с использованием UIAlertController
             }
         }

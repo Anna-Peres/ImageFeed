@@ -20,6 +20,7 @@ final class ProfileImageService {
     private var task: URLSessionTask?
     private let storage = OAuth2TokenStorage()
     
+    
     func fetchProfileImageURL(username: String, _ handler: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
         task?.cancel()
@@ -50,6 +51,10 @@ final class ProfileImageService {
             self?.task = nil
         }
         task.resume()
+    }
+    
+    func cleanProfileImage() {
+        avatarURL = nil
     }
 }
 

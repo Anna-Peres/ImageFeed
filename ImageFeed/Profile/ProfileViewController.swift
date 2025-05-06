@@ -14,6 +14,8 @@ final class ProfileViewController: UIViewController {
     private var profileImageService = ProfileImageService.shared
     private let storage = OAuth2TokenStorage()
     private var profileImageServiceObserver: NSObjectProtocol?
+    private var profileLogoutService = ProfileLogoutService.shared
+    private let splashViewController = SplashViewController()
     
     // MARK: - UI Elements
     private var nameLabel = UILabel()
@@ -55,7 +57,8 @@ final class ProfileViewController: UIViewController {
     }
     
     @IBAction private func didTapLogoutButton() {
-        // TODO:
+        profileLogoutService.logout()
+        switchToAuthViewController()
     }
     
     private func configureProfileImage() {
@@ -149,6 +152,11 @@ final class ProfileViewController: UIViewController {
         guard let profileImageURL = profileImageService.avatarURL else { return }
         let imageUrl = URL(string: profileImageURL)
         profileImageView.kf.setImage(with: imageUrl,
-                                     placeholder: UIImage(named: "placeholder.jpeg"))
+                                     placeholder: UIImage(named: "placeholder_for_profile"))
+    }
+    
+    private func switchToAuthViewController() {
+        splashViewController.modalPresentationStyle = .fullScreen
+        self.present(splashViewController, animated: true)
     }
 }

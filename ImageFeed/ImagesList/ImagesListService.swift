@@ -15,10 +15,12 @@ final class ImagesListService {
     private var task: URLSessionTask?
     private let storage = OAuth2TokenStorage()
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListService.didChangeNotification")
-    
+    static let shared = ImagesListService()
     private var pageNumber = 1
     private let decoder = JSONDecoder()
     var images: [Image] = []
+    
+    private init() {}
     
     func fetchPhotosNextPage(completion: @escaping (Error?) -> Void) {
         guard task == nil,
@@ -173,6 +175,10 @@ final class ImagesListService {
             task = nil
         }
         task?.resume()
+    }
+    
+    func cleanImages() {
+        images.removeAll()
     }
 }
 
