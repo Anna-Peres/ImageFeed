@@ -37,11 +37,6 @@ final class ProfileViewController: UIViewController {
         configureLoginNameLabel()
         configureDescriptionLabel()
         configureLogoutButton()
-        
-        guard storage.token != nil else {
-            print("Authorization token not found")
-            return
-        }
         updateProfileDetails()
         
         profileImageServiceObserver = NotificationCenter.default
@@ -53,12 +48,12 @@ final class ProfileViewController: UIViewController {
                 guard let self = self else { return }
                 self.updateAvatar()
             }
+        
         updateAvatar()
     }
     
     @IBAction private func didTapLogoutButton() {
-        profileLogoutService.logout()
-        switchToAuthViewController()
+        showLogoutAlert()
     }
     
     private func configureProfileImage() {
@@ -141,6 +136,10 @@ final class ProfileViewController: UIViewController {
     }
     
     private func updateProfileDetails() {
+        guard let token = storage.token else {
+            print("Authorization token not found")
+            return
+        }
         guard let profile = profileService.profile else { return }
         
         nameLabel.text = profile.name
@@ -158,5 +157,17 @@ final class ProfileViewController: UIViewController {
     private func switchToAuthViewController() {
         splashViewController.modalPresentationStyle = .fullScreen
         self.present(splashViewController, animated: true)
+    }
+    
+    private func showLogoutAlert() {
+        let alert = UIAlertController(title: "Пока, пока!",
+                                                message: "Уверены, что хотите выйти?",
+                                                preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Да", style: .default, handler: { (action: UIAlertAction!) in
+            self.profileLogoutService.logout()
+            self.switchToAuthViewController()
+        }))
+        alert.addAction(UIAlertAction(title: "Нет", style: .default))
+        self.present(alert, animated: true)
     }
 }

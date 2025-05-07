@@ -40,6 +40,7 @@ final class ImagesListService {
             
             if let error {
                 completionOnMainQueue(error)
+                print("[ImageListService]: error task")
             }
             
             if let data {
@@ -64,12 +65,14 @@ final class ImagesListService {
                         .post(
                             name: ProfileImageService.didChangeNotification,
                             object: self,
-                            userInfo: ["page": pageNumber, "per_page": 10])
+                            userInfo: nil)
                 } catch {
                     completionOnMainQueue(error)
+                    print("[ImageListService]: error decoding")
                 }
             } else {
                 completion(ImageListServiceError.somethingWentWrong)
+                print("[ImageListService]: something went wrong")
             }
             
             task = nil
@@ -150,9 +153,7 @@ final class ImagesListService {
             case .success(_):
                 DispatchQueue.main.async {
                     if let index = self.images.firstIndex(where: { $0.id == photoId }) {
-                        // Текущий элемент
                         let photo = self.images[index]
-                        // Копия элемента с инвертированным значением isLiked.
                         let newPhoto = Image(
                             id: photo.id,
                             size: photo.size,
@@ -162,13 +163,12 @@ final class ImagesListService {
                             fullImageURL: photo.fullImageURL,
                             isLiked: !photo.isLiked
                         )
-                        // Заменяем элемент в массиве.
                         self.images[index] = newPhoto
                     }
                     completion(.success(()))
                 }
             case .failure(let error):
-                print("[ImageListService]: error while changing like: \(error)")
+                print("[ImageListService]: error while changing like")
                 completion(.failure(error))
             }
             
