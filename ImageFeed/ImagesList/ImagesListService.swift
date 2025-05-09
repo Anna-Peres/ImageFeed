@@ -1,12 +1,12 @@
 //
-//  ImagesListServic.swift
+//  ImagesListService.swift
 //  ImageFeed
 //
 //  Created by Анна Перескокова on 30.04.2025.
 //
 import Foundation
 
-enum ImageListServiceError: Error {
+enum ImagesListServiceError: Error {
     case somethingWentWrong
 }
 
@@ -15,14 +15,16 @@ final class ImagesListService {
     private var task: URLSessionTask?
     private let storage = OAuth2TokenStorage()
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListService.didChangeNotification")
+    var imageListServiceObserver: NSObjectProtocol?
     static let shared = ImagesListService()
     private var pageNumber = 1
     private let decoder = JSONDecoder()
-    var images: [Image] = []
+    var photos: [Photo] = []
     
     private init() {}
     
     func fetchPhotosNextPage(completion: @escaping (Error?) -> Void) {
+        assert(Thread.isMainThread)
         guard task == nil,
               let request = request()
         else { return }
@@ -45,9 +47,9 @@ final class ImagesListService {
             
             if let data {
                 do {
-                    let responseImages = try decoder.decode([ResponseImage].self, from: data)
+                    let responseImages = try decoder.decode([PhotoResult].self, from: data)
 
-                    images.append(
+                    photos.append(
                         contentsOf: responseImages.map {
                             .init(
                                 id: $0.id,
@@ -63,7 +65,7 @@ final class ImagesListService {
                     completionOnMainQueue(nil)
                     NotificationCenter.default
                         .post(
-                            name: ProfileImageService.didChangeNotification,
+                            name: ImagesListService.didChangeNotification,
                             object: self,
                             userInfo: nil)
                 } catch {
@@ -71,48 +73,13 @@ final class ImagesListService {
                     print("[ImageListService]: error decoding")
                 }
             } else {
-                completion(ImageListServiceError.somethingWentWrong)
+                completion(ImagesListServiceError.somethingWentWrong)
                 print("[ImageListService]: something went wrong")
             }
             
             task = nil
         }
         task?.resume()
-    }
-    
-    struct ResponseImage: Decodable {
-        let id: String
-        let width: Int
-        let height: Int
-        let createdAt: String?
-        let description: String?
-        let urls: ResponseImageUrls
-        let likedByUser: Bool
-        
-        enum CodingKeys: String, CodingKey {
-            case id = "id"
-            case width = "width"
-            case height = "height"
-            case createdAt = "created_at"
-            case description = "description"
-            case urls = "urls"
-            case likedByUser = "liked_by_user"
-        }
-    }
-    
-    struct ResponseImageUrls: Decodable {
-        let thumb: String
-        let full: String
-    }
-    
-    struct Image {
-        let id: String
-        let size: CGSize
-        let createdAt: Date?
-        let welcomeDescription: String?
-        let thumbImageURL: String
-        let fullImageURL: String
-        let isLiked: Bool
     }
     
     private func request() -> URLRequest? {
@@ -129,8 +96,6 @@ final class ImagesListService {
     }
     
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
-        task?.cancel()
-        
         var components = URLComponents(string: "https://api.unsplash.com/photos/\(photoId)/like")
         components?.queryItems = [URLQueryItem(name: "id", value: photoId)]
         guard
@@ -141,20 +106,22 @@ final class ImagesListService {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
         if isLike {
-            request.httpMethod = "POST"
-        } else {
             request.httpMethod = "DELETE"
+        } else {
+            request.httpMethod = "POST"
         }
-      
+        
+        task?.cancel()
+        
         task = session.dataTaskWithResult(for: request) { [weak self] result in
             guard let self else { return }
             
             switch result {
             case .success(_):
                 DispatchQueue.main.async {
-                    if let index = self.images.firstIndex(where: { $0.id == photoId }) {
-                        let photo = self.images[index]
-                        let newPhoto = Image(
+                    if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+                        let photo = self.photos[index]
+                        let newPhoto = Photo(
                             id: photo.id,
                             size: photo.size,
                             createdAt: photo.createdAt,
@@ -163,12 +130,12 @@ final class ImagesListService {
                             fullImageURL: photo.fullImageURL,
                             isLiked: !photo.isLiked
                         )
-                        self.images[index] = newPhoto
+                        self.photos[index] = newPhoto
                     }
                     completion(.success(()))
                 }
             case .failure(let error):
-                print("[ImageListService]: error while changing like")
+                print("[ImagesListService]: error while changing like")
                 completion(.failure(error))
             }
             
@@ -177,8 +144,8 @@ final class ImagesListService {
         task?.resume()
     }
     
-    func cleanImages() {
-        images.removeAll()
+    func cleanPhotos() {
+        photos.removeAll()
     }
 }
 

@@ -136,7 +136,7 @@ final class ProfileViewController: UIViewController {
     }
     
     private func updateProfileDetails() {
-        guard let token = storage.token else {
+        guard storage.token != nil else {
             print("Authorization token not found")
             return
         }

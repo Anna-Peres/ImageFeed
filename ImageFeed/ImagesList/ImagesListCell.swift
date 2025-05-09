@@ -39,9 +39,9 @@ final class ImagesListCell: UITableViewCell {
         cellImage.kf.cancelDownloadTask()
     }
     
-    func setIsLiked(_ isLiked: Bool) {
+    func setIsLiked(cell: ImagesListCell, _ isLiked: Bool) {
         let likeImage = isLiked ? UIImage(named: "like_button_on") : UIImage(named: "like_button_off")
-        self.likeButton.setImage(likeImage, for: .normal)
+        cell.likeButton.setImage(likeImage, for: .normal)
     }
 }
 

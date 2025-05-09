@@ -35,7 +35,7 @@ final class ProfileLogoutService {
     private func cleanData () {
         profileService.cleanProfile()
         profileImageService.cleanProfileImage()
-        imagesListService.cleanImages()
+        imagesListService.cleanPhotos()
     }
     
     private func cleanToken() {
