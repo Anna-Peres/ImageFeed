@@ -49,25 +49,27 @@ final class ImagesListService {
                 do {
                     let responseImages = try decoder.decode([PhotoResult].self, from: data)
 
-                    photos.append(
-                        contentsOf: responseImages.map {
-                            .init(
-                                id: $0.id,
-                                size: CGSize(width: $0.width, height: $0.height),
-                                createdAt: ISO8601DateFormatter().date(from: $0.createdAt ?? ""),
-                                welcomeDescription: $0.description,
-                                thumbImageURL: $0.urls.thumb,
-                                fullImageURL: $0.urls.full,
-                                isLiked: $0.likedByUser)
-                        }
-                    )
-                    pageNumber += 1
-                    completionOnMainQueue(nil)
-                    NotificationCenter.default
-                        .post(
-                            name: ImagesListService.didChangeNotification,
-                            object: self,
-                            userInfo: nil)
+                    DispatchQueue.main.async {
+                        self.photos.append(
+                            contentsOf: responseImages.map {
+                                .init(
+                                    id: $0.id,
+                                    size: CGSize(width: $0.width, height: $0.height),
+                                    createdAt: ISO8601DateFormatter().date(from: $0.createdAt ?? ""),
+                                    welcomeDescription: $0.description,
+                                    thumbImageURL: $0.urls.thumb,
+                                    fullImageURL: $0.urls.full,
+                                    isLiked: $0.likedByUser)
+                            }
+                        )
+                        self.pageNumber += 1
+                        completionOnMainQueue(nil)
+                        NotificationCenter.default
+                            .post(
+                                name: ImagesListService.didChangeNotification,
+                                object: self,
+                                userInfo: nil)
+                    }
                 } catch {
                     completionOnMainQueue(error)
                     print("[ImageListService]: error decoding")
