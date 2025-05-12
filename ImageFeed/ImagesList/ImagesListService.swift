@@ -24,7 +24,6 @@ final class ImagesListService {
     private init() {}
     
     func fetchPhotosNextPage(completion: @escaping (Error?) -> Void) {
-        assert(Thread.isMainThread)
         guard task == nil,
               let request = request()
         else { return }
