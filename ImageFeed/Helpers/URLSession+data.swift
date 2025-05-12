@@ -50,6 +50,7 @@ extension URLSession {
             // TODO [Sprint 11] Напишите реализацию c декодированием Data в тип T
             switch result {
             case .success(let data):
+//                print(String(data: data, encoding: .utf8) ?? "Data not found")
                 do {
                     let decodedResponse = try Self.decoder.decode(T.self, from: data)
                     completion(.success(decodedResponse))

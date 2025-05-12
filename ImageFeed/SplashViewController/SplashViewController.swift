@@ -28,8 +28,6 @@ final class SplashViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNeedsStatusBarAppearanceUpdate()
-        
-        print(NSHomeDirectory())
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -85,7 +83,7 @@ extension SplashViewController: AuthViewControllerDelegate {
         fetchProfile(token)
     }
     
-    private func fetchProfile(_ token: String) {
+    func fetchProfile(_ token: String) {
         UIBlockingProgressHUD.show()
         ProfileService.shared.fetchProfile(token) { [weak self] result in
             UIBlockingProgressHUD.dismiss()
