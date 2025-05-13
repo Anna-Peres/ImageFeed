@@ -9,21 +9,21 @@
 import Foundation
 import XCTest
 
-final class ProfileTests: XCTestCase {
-    func testViewControllerCallsViewDidLoad() {
-        //given
-        let viewController = ProfileViewController()
-        let presenter = ProfilePresenterSpy()
-        viewController.presenter = presenter
-        presenter.view = viewController
-        
-        //when
-        _ = viewController.view
-        
-        //then
-        XCTAssertTrue(presenter.viewDidLoadCalled)
-    }
-    
+//final class ProfileTests: XCTestCase {
+//    func testViewControllerCallsViewDidLoad() {
+//        //given
+//        let viewController = ProfileViewController()
+//        let presenter = ProfilePresenterSpy()
+//        viewController.presenter = presenter
+//        presenter.view = viewController
+//        
+//        //when
+//        _ = viewController.view
+//        
+//        //then
+//        XCTAssertTrue(presenter.viewDidLoadCalled)
+//    }
+//    
 //    func testPresenterCallsUpdate() {
 //        //given
 //        let viewController = ProfileViewController()

@@ -17,10 +17,10 @@ final class ProfilePresenter: ProfilePresenterProtocol {
     private var profileImageServiceObserver: NSObjectProtocol?
     
     func viewDidLoad() {
-        update()
+        updateProfile()
     }
     
-    func update() {
+    func updateProfile() {
         profileImageServiceObserver = NotificationCenter.default
             .addObserver(
                 forName: ProfileImageService.didChangeNotification,
