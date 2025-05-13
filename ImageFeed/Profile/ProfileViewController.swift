@@ -8,14 +8,20 @@
 import UIKit
 import Kingfisher
 
-final class ProfileViewController: UIViewController {
+public protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfilePresenterProtocol? { get set }
+    func updateAvatar()
+}
+
+final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
     // MARK: - Services
     private var profileService = ProfileService.shared
     private var profileImageService = ProfileImageService.shared
     private let storage = OAuth2TokenStorage()
-    private var profileImageServiceObserver: NSObjectProtocol?
+//    private var profileImageServiceObserver: NSObjectProtocol?
     private var profileLogoutService = ProfileLogoutService.shared
     private let splashViewController = SplashViewController()
+    var presenter: ProfilePresenterProtocol?
     
     // MARK: - UI Elements
     private var nameLabel = UILabel()
@@ -39,17 +45,24 @@ final class ProfileViewController: UIViewController {
         configureLogoutButton()
         updateProfileDetails()
         
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ProfileImageService.didChangeNotification,
-                object: nil,
-                queue: .main
-            ) { [weak self] _ in
-                guard let self = self else { return }
-                self.updateAvatar()
-            }
-        
+//        profileImageServiceObserver = NotificationCenter.default
+//            .addObserver(
+//                forName: ProfileImageService.didChangeNotification,
+//                object: nil,
+//                queue: .main
+//            ) { [weak self] _ in
+//                guard let self = self else { return }
+//                self.updateAvatar()
+//            }
+        presenter?.viewDidLoad()
         updateAvatar()
+    }
+    
+    func updateAvatar() {
+        guard let profileImageURL = profileImageService.avatarURL else { return }
+        let imageUrl = URL(string: profileImageURL)
+        profileImageView.kf.setImage(with: imageUrl,
+                                     placeholder: UIImage(named: "placeholder_for_profile"))
     }
     
     @IBAction private func didTapLogoutButton() {
@@ -145,13 +158,6 @@ final class ProfileViewController: UIViewController {
         nameLabel.text = profile.name
         loginNameLabel.text = profile.loginName
         descriptionLabel.text = profile.bio
-    }
-    
-    private func updateAvatar() {
-        guard let profileImageURL = profileImageService.avatarURL else { return }
-        let imageUrl = URL(string: profileImageURL)
-        profileImageView.kf.setImage(with: imageUrl,
-                                     placeholder: UIImage(named: "placeholder_for_profile"))
     }
     
     private func switchToAuthViewController() {

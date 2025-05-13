@@ -5,7 +5,7 @@
 //  Created by Анна Перескокова on 12.05.2025.
 //
 
-import UIKit
+import Foundation
 import WebKit
 
 public protocol WebViewPresenterProtocol {
