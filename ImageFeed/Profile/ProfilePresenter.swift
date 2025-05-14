@@ -17,6 +17,7 @@ final class ProfilePresenter: ProfilePresenterProtocol {
     private var profileImageServiceObserver: NSObjectProtocol?
     
     func viewDidLoad() {
+        print("ProfilePresenter loaded")
         updateProfile()
     }
     

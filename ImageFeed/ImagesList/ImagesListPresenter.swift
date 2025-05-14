@@ -24,7 +24,7 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
     private let imagesListService = ImagesListService.shared
     
     func viewDidLoad() {
-        print("Presenter loaded")
+        print("ImageListPresenter loaded")
         updateImagesList()
         loadImages()
     }
