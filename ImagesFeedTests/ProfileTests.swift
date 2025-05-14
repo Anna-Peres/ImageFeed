@@ -1,14 +1,14 @@
+////
+////  ProfileTests.swift
+////  ImageFeed
+////
+////  Created by Анна Перескокова on 12.05.2025.
+////
 //
-//  ProfileTests.swift
-//  ImageFeed
+//@testable import ImageFeed
+//import Foundation
+//import XCTest
 //
-//  Created by Анна Перескокова on 12.05.2025.
-//
-
-@testable import ImageFeed
-import Foundation
-import XCTest
-
 //final class ProfileTests: XCTestCase {
 //    func testViewControllerCallsViewDidLoad() {
 //        //given
@@ -37,19 +37,19 @@ import XCTest
 //        //then
 //        XCTAssertTrue(presenter.updateCalled)
 //    }
-}
-
-final class ProfilePresenterSpy: ProfilePresenterProtocol {
-    var view: ProfileViewControllerProtocol?
-    var viewDidLoadCalled: Bool = false
-    var updateCalled: Bool = false
-    
-    func viewDidLoad() {
-        viewDidLoadCalled = true
-    }
-    
-    func update() {
-        updateCalled = true
-    }
-}
-
+//}
+//
+//final class ProfilePresenterSpy: ProfilePresenterProtocol {
+//    var view: ProfileViewControllerProtocol?
+//    var viewDidLoadCalled: Bool = false
+//    var updateCalled: Bool = false
+//    
+//    func viewDidLoad() {
+//        viewDidLoadCalled = true
+//    }
+//    
+//    func update() {
+//        updateCalled = true
+//    }
+//}
+//
