@@ -52,11 +52,10 @@ final class ImagesListViewController: UIViewController & ImagesListViewControlle
 //                self.updateTableViewAnimated()
 //            }
 //
-        guard let tableView else { return }
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.rowHeight = 200
-        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        tableView?.delegate = self
+        tableView?.dataSource = self
+        tableView?.rowHeight = 200
+        tableView?.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         
         presenter?.viewDidLoad()
     }
