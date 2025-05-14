@@ -28,8 +28,12 @@ final class ProfilePresenter: ProfilePresenterProtocol {
                 object: nil,
                 queue: .main
             ) { [weak self] _ in
-                guard let view = self?.view else { return }
-                view.updateAvatar()
+                guard (self?.view) != nil else { return }
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    print("Updating avatar")
+                    self.view?.updateAvatar()
+                }
             }
     }
 }
