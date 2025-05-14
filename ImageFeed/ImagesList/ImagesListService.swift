@@ -15,7 +15,7 @@ final class ImagesListService {
     private var task: URLSessionTask?
     private let storage = OAuth2TokenStorage()
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListService.didChangeNotification")
-    var imageListServiceObserver: NSObjectProtocol?
+    var imagesListServiceObserver: NSObjectProtocol?
     static let shared = ImagesListService()
     private var pageNumber = 1
     private let decoder = JSONDecoder()

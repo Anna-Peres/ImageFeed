@@ -9,16 +9,39 @@ import Foundation
 
 public protocol ImagesListPresenterProtocol {
     var view: ImagesListViewControllerProtocol? { get set }
+    func viewDidLoad()
+    func loadImages()
 }
 
 final class ImagesListPresenter: ImagesListPresenterProtocol {
     weak var view: ImagesListViewControllerProtocol?
-    lazy var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
-        return formatter
-    }()
+    private let imagesListService = ImagesListService.shared
+
+    func viewDidLoad() {
+        updateImagesList()
+    }
+    
+    func updateImagesList() {
+        imagesListService.imagesListServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ImagesListService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let view = self?.view else { return }
+                view.updateTableViewAnimated()
+            }
+    }
+    
+   func loadImages() {
+        imagesListService.fetchPhotosNextPage { [weak self] error in
+            if let error {
+                print(error.localizedDescription)
+            } else {
+                self?.view?.tableView?.reloadData()
+            }
+        }
+    }
 }
 
 

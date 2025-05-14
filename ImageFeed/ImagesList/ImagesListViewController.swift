@@ -14,6 +14,8 @@ protocol ImagesListCellDelegate: AnyObject {
 
 public protocol ImagesListViewControllerProtocol: AnyObject {
     var presenter: ImagesListPresenterProtocol? { get set }
+    func updateTableViewAnimated()
+    var tableView: UITableView? { get }
 }
 
 final class ImagesListViewController: UIViewController & ImagesListViewControllerProtocol {
@@ -31,7 +33,7 @@ final class ImagesListViewController: UIViewController & ImagesListViewControlle
     }()
     
     // MARK: - UI Elements
-    @IBOutlet private var tableView: UITableView!
+    @IBOutlet var tableView: UITableView?
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -40,20 +42,21 @@ final class ImagesListViewController: UIViewController & ImagesListViewControlle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        imagesListService.imageListServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ImagesListService.didChangeNotification,
-                object: nil,
-                queue: .main
-            ) { [weak self] _ in
-                guard let self = self else { return }
-                self.updateTableViewAnimated()
-            }
-        
+//        imagesListService.imagesListServiceObserver = NotificationCenter.default
+//            .addObserver(
+//                forName: ImagesListService.didChangeNotification,
+//                object: nil,
+//                queue: .main
+//            ) { [weak self] _ in
+//                guard let self = self else { return }
+//                self.updateTableViewAnimated()
+//            }
+//
+        guard let tableView else { return }
         tableView.rowHeight = 200
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         
-        loadImages()
+        presenter?.loadImages()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -77,6 +80,7 @@ final class ImagesListViewController: UIViewController & ImagesListViewControlle
         let oldCount = photos.count
         let newCount = imagesListService.photos.count
         photos = imagesListService.photos
+        guard let tableView else { return }
         if oldCount != newCount {
             tableView.performBatchUpdates {
                 let indexPaths = (oldCount..<newCount).map { i in
@@ -105,7 +109,7 @@ extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let imagesCount = imagesListService.photos.count
         if indexPath.row == imagesCount - 1 {
-            loadImages()
+            presenter?.loadImages()
         }
     }
 }
@@ -142,19 +146,20 @@ extension ImagesListViewController {
         cell.likeButton.setImage(likeImage, for: .normal)
     }
     
-    private func loadImages() {
-        imagesListService.fetchPhotosNextPage { [weak self] error in
-            if let error {
-                print(error.localizedDescription)
-            } else {
-                self?.tableView.reloadData()
-            }
-        }
-    }
+//    private func loadImages() {
+//        imagesListService.fetchPhotosNextPage { [weak self] error in
+//            if let error {
+//                print(error.localizedDescription)
+//            } else {
+//                self?.tableView.reloadData()
+//            }
+//        }
+//    }
 }
 
 extension ImagesListViewController: ImagesListCellDelegate {
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let tableView else { return }
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         let image = photos[indexPath.row]
         UIBlockingProgressHUD.show()
