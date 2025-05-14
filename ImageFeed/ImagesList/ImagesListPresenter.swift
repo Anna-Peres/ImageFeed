@@ -19,6 +19,7 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
 
     func viewDidLoad() {
         updateImagesList()
+        loadImages()
     }
     
     func updateImagesList() {
