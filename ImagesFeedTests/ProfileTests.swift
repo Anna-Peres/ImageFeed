@@ -26,6 +26,14 @@ final class ProfileTests: XCTestCase {
 }
 
 final class ProfilePresenterSpy: ProfilePresenterProtocol {
+    func updateAvatarUrl() -> URL? {
+        return nil
+    }
+    
+    func getProfile() -> ImageFeed.Profile? {
+        return nil
+    }
+    
     var view: ProfileViewControllerProtocol?
     var viewDidLoadCalled: Bool = false
     var updateProfileCalled: Bool = false
