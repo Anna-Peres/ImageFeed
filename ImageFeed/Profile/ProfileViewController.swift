@@ -15,9 +15,6 @@ protocol ProfileViewControllerProtocol: AnyObject {
 
 final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
     // MARK: - Services
-    private var profileService = ProfileService.shared
-    private var profileImageService = ProfileImageService.shared
-    private let storage = OAuth2TokenStorage()
     private var profileLogoutService = ProfileLogoutService.shared
     private let splashViewController = SplashViewController()
     var presenter: ProfilePresenterProtocol?
@@ -48,8 +45,6 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
     }
     
     func updateAvatar() {
-//        guard let profileImageURL = profileImageService.avatarURL else { return }
-//        let imageUrl = URL(string: profileImageURL)
         let imageUrl = presenter?.updateAvatarUrl()
         profileImageView.kf.setImage(with: imageUrl,
                                      placeholder: UIImage(named: "placeholder_for_profile"))
@@ -139,12 +134,6 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
     }
     
     private func updateProfileDetails() {
-//        guard storage.token != nil else {
-//            print("Authorization token not found")
-//            return
-//        }
-//        guard let profile = profileService.profile else { return }
-//
         guard let profile = presenter?.getProfile() else {
             print("Error retrieving profile data")
             return

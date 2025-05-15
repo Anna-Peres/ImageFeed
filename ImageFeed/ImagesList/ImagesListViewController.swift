@@ -60,7 +60,7 @@ final class ImagesListViewController: UIViewController & ImagesListViewControlle
             let imageUrl = URL(string: image.fullImageURL)
             viewController.fullImageURL = imageUrl
         } else {
-                super.prepare(for: segue, sender: sender)
+            super.prepare(for: segue, sender: sender)
         }
     }
     
@@ -141,9 +141,9 @@ extension ImagesListViewController {
 extension ImagesListViewController: ImagesListCellDelegate {
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
         guard let indexPath = tableView?.indexPath(for: cell) else { return }
-
+        
         UIBlockingProgressHUD.show()
-
+        
         presenter?.didTapLike(at: indexPath) { [weak self] success in
             guard let self else { return }
             
@@ -152,9 +152,12 @@ extension ImagesListViewController: ImagesListCellDelegate {
                 cell.setIsLiked(cell: cell, newImage.isLiked)
                 print("Photo is liked: \(newImage.isLiked)")
             } else {
-                // TODO: Показать ошибку
+                let alert = UIAlertController(title: "Ошибка",
+                                              message: "Что-то пошло не так",
+                                              preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ок", style: .default))
+                self.present(alert, animated: true)
             }
-            
             UIBlockingProgressHUD.dismiss()
         }
     }

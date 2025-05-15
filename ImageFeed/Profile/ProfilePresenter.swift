@@ -48,10 +48,6 @@ final class ProfilePresenter: ProfilePresenterProtocol {
     }
     
     func getProfile() -> Profile? {
-        //        guard storage.token != nil else {
-        //            print("Authorization token not found")
-        //            return
-        //        }
         let profile = profileService.profile
         return profile
     }
