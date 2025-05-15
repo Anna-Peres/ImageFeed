@@ -155,7 +155,7 @@
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p3N-hD-ROf">
                                 <rect key="frame" x="8" y="9" width="24" height="24"/>
-                                <accessibility key="accessibilityConfiguration" identifier="nav back button white">
+                                <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" button="YES" selected="YES"/>
                                 </accessibility>
                                 <constraints>
@@ -203,7 +203,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TUx-Sc-FSf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2276" y="-483"/>
+            <point key="canvasLocation" x="2275.5725190839694" y="-483.0985915492958"/>
         </scene>
         <!--Auth View Controller-->
         <scene sceneID="q87-fk-8av">
