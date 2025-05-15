@@ -15,12 +15,14 @@ final class SingleImageViewController: UIViewController {
     // MARK: - UI Elements
     @IBOutlet private var scrollView: UIScrollView!
     @IBOutlet var imageView: UIImageView!
+    @IBOutlet var backButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
         setImage()
+        backButton.accessibilityIdentifier = "nav back button white"
     }
     
     @IBAction private func didTapBackButton() {

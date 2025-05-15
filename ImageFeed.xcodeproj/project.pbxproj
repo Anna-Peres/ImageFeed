@@ -11,6 +11,7 @@
 		AD06AB2E2DBFE61A00DC72DC /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = AD06AB2D2DBFE61A00DC72DC /* SwiftKeychainWrapper */; };
 		AD3FCEC62DA42BF800CB8CBD /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = AD3FCEC52DA42BF800CB8CBD /* ProgressHUD */; };
 		ADB4DB792DC0B64D009E4B19 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADB4DB782DC0B64D009E4B19 /* WebKit.framework */; };
+		ADF9FA1F2DD4885F00C64733 /* ImageFeedUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF9FA1C2DD4885F00C64733 /* ImageFeedUITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		ADE9EE452D69F80600689BAE /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADE9EE5B2D69F80700689BAE /* ImageFeedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageFeedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADE9EE652D69F80700689BAE /* ImageFeedUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageFeedUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		ADF9FA1C2DD4885F00C64733 /* ImageFeedUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFeedUITests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -152,6 +154,7 @@
 				AD798D682DC3A839007D8D8E /* ImagesFeedTests */,
 				ADB4DB772DC0B64C009E4B19 /* Frameworks */,
 				ADE9EE462D69F80600689BAE /* Products */,
+				ADF9FA1E2DD4885F00C64733 /* ImageFeedUITests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -166,6 +169,14 @@
 				AD798D672DC3A839007D8D8E /* ImagesFeedTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		ADF9FA1E2DD4885F00C64733 /* ImageFeedUITests */ = {
+			isa = PBXGroup;
+			children = (
+				ADF9FA1C2DD4885F00C64733 /* ImageFeedUITests.swift */,
+			);
+			path = ImageFeedUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -448,6 +459,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ADF9FA1F2DD4885F00C64733 /* ImageFeedUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,7 +13,7 @@
         <!--ImageList-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="ImagesListViewController" title="ImageList" id="BYZ-38-t0r" customClass="ImagesListViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ImagesListViewController" title="ImageList" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="ImagesListViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -53,6 +53,9 @@
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N1x-QW-YYO" userLabel="Like Button">
                                                     <rect key="frame" x="333" y="4" width="44" height="44"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="like button">
+                                                        <accessibilityTraits key="traits" button="YES" selected="YES"/>
+                                                    </accessibility>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="44" id="JYI-wY-WsW"/>
                                                         <constraint firstAttribute="height" constant="44" id="VGt-uf-gG1"/>
@@ -114,7 +117,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="fzH-k6-UVK">
             <objects>
-                <tabBarController storyboardIdentifier="TabBarViewController" id="3lC-Y6-YZC" customClass="TabBarController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="3lC-Y6-YZC" customClass="TabBarController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="PM5-kf-ZcS">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -152,6 +155,9 @@
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p3N-hD-ROf">
                                 <rect key="frame" x="8" y="9" width="24" height="24"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" button="YES" selected="YES"/>
+                                </accessibility>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="24" id="JGh-oX-Kzu"/>
                                     <constraint firstAttribute="height" constant="24" id="gAd-t4-4OG"/>
@@ -190,13 +196,14 @@
                     </view>
                     <navigationItem key="navigationItem" id="bcG-l9-4bg"/>
                     <connections>
+                        <outlet property="backButton" destination="p3N-hD-ROf" id="AdI-Yt-cYF"/>
                         <outlet property="imageView" destination="hDs-iZ-PvH" id="74x-zy-dbD"/>
                         <outlet property="scrollView" destination="faj-3J-iib" id="eEA-e4-myl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TUx-Sc-FSf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2276" y="-483"/>
+            <point key="canvasLocation" x="2275.5725190839694" y="-483.0985915492958"/>
         </scene>
         <!--Auth View Controller-->
         <scene sceneID="q87-fk-8av">
@@ -213,9 +220,12 @@
                                     <constraint firstAttribute="width" constant="60" id="CVI-8F-ZYo"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="isp-4U-o7z">
+                            <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="Authenticate" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="isp-4U-o7z">
                                 <rect key="frame" x="16" y="680" width="361" height="48"/>
                                 <color key="backgroundColor" name="YP White"/>
+                                <accessibility key="accessibilityConfiguration" identifier="Authenticate">
+                                    <accessibilityTraits key="traits" button="YES" selected="YES"/>
+                                </accessibility>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="whK-h1-V9e"/>
                                 </constraints>
@@ -295,7 +305,7 @@
         <!--Web View View Controller-->
         <scene sceneID="ubE-kj-XbK">
             <objects>
-                <viewController id="tvv-Lm-n6S" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WebViewViewController" id="tvv-Lm-n6S" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6WA-jc-DjB">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
