@@ -12,7 +12,6 @@
 		AD3FCEC62DA42BF800CB8CBD /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = AD3FCEC52DA42BF800CB8CBD /* ProgressHUD */; };
 		ADB4DB792DC0B64D009E4B19 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADB4DB782DC0B64D009E4B19 /* WebKit.framework */; };
 		ADF9FA1F2DD4885F00C64733 /* ImageFeedUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF9FA1C2DD4885F00C64733 /* ImageFeedUITests.swift */; };
-		ADF9FA212DD4885F00C64733 /* ImageFeedUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF9FA1C2DD4885F00C64733 /* ImageFeedUITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -446,7 +445,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ADF9FA212DD4885F00C64733 /* ImageFeedUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

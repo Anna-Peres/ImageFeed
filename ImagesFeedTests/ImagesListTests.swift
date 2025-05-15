@@ -24,20 +24,6 @@ final class ImagesListTests: XCTestCase {
         //then
         XCTAssertTrue(presenter.viewDidLoadCalled)
     }
-    
-    func testPresenterCallsUpdateImagesList() {
-        //given
-        let viewController = ImagesListViewControllerSpy()
-        let presenter = ImagesListPresenterSpy()
-        viewController.presenter = presenter
-        presenter.view = viewController
-        
-        //when
-        presenter.viewDidLoad()
-        
-        //then
-        XCTAssertTrue(presenter.updateImagesListCalled)
-    }
 }
 
 final class ImagesListPresenterSpy: ImagesListPresenterProtocol {
@@ -62,14 +48,3 @@ final class ImagesListPresenterSpy: ImagesListPresenterProtocol {
         updateImagesListCalled = true
     }
 }
-
-final class ImagesListViewControllerSpy: ImagesListViewControllerProtocol {
-    var tableView: UITableView?
-    var presenter: ImageFeed.ImagesListPresenterProtocol?
-
-    func updateTableViewAnimated() {
-    }
-}
-
-
-

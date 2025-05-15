@@ -24,25 +24,6 @@ final class WebViewPresenter: WebViewPresenterProtocol {
     }
     
     func viewDidLoad() {
-        //        guard var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString) else {
-        //            print("URLComponents not found")
-        //            return
-        //        }
-        //
-        //        urlComponents.queryItems = [
-        //            URLQueryItem(name: "client_id", value: Constants.accessKey),
-        //            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
-        //            URLQueryItem(name: "response_type", value: "code"),
-        //            URLQueryItem(name: "scope", value: Constants.accessScope)
-        //        ]
-        //
-        //        guard let url = urlComponents.url else {
-        //            print("URL not found")
-        //            return
-        //        }
-        //
-        //        let request = URLRequest(url: url)
-        
         guard let request = authHelper.authRequest() else { return }
         
         view?.load(request: request)
@@ -62,15 +43,6 @@ final class WebViewPresenter: WebViewPresenterProtocol {
     }
     
     func code(from url: URL) -> String? {
-//        if let urlComponents = URLComponents(string: url.absoluteString),
-//           urlComponents.path == "/oauth/authorize/native",
-//           let items = urlComponents.queryItems,
-//           let codeItem = items.first(where: { $0.name == "code" })
-//        {
-//            return codeItem.value
-//        } else {
-//            return nil
-//        }
         authHelper.code(from: url)
     }
 }

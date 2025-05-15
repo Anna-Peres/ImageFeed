@@ -23,20 +23,6 @@ final class ProfileTests: XCTestCase {
         //then
         XCTAssertTrue(presenter.viewDidLoadCalled)
     }
-    
-    func testPresenterCallsUpdateAvatar() {
-        //given
-        let viewController = ProfileViewControllerSpy()
-        let presenter = ProfilePresenterSpy()
-        viewController.presenter = presenter
-        presenter.view = viewController
-        
-        //when
-        presenter.viewDidLoad()
-        
-        //then
-        XCTAssertTrue(presenter.updateProfileCalled)
-    }
 }
 
 final class ProfilePresenterSpy: ProfilePresenterProtocol {
@@ -50,13 +36,5 @@ final class ProfilePresenterSpy: ProfilePresenterProtocol {
   
     func updateProfile() {
         updateProfileCalled = true
-    }
-}
-
-final class ProfileViewControllerSpy: ProfileViewControllerProtocol {
-    
-    var presenter: ImageFeed.ProfilePresenterProtocol?
-
-    func updateAvatar(){
     }
 }

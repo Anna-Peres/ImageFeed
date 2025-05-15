@@ -18,7 +18,6 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
     private var profileService = ProfileService.shared
     private var profileImageService = ProfileImageService.shared
     private let storage = OAuth2TokenStorage()
-//    private var profileImageServiceObserver: NSObjectProtocol?
     private var profileLogoutService = ProfileLogoutService.shared
     private let splashViewController = SplashViewController()
     var presenter: ProfilePresenterProtocol?
@@ -44,16 +43,6 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         configureDescriptionLabel()
         configureLogoutButton()
         updateProfileDetails()
-        
-//        profileImageServiceObserver = NotificationCenter.default
-//            .addObserver(
-//                forName: ProfileImageService.didChangeNotification,
-//                object: nil,
-//                queue: .main
-//            ) { [weak self] _ in
-//                guard let self = self else { return }
-//                self.updateAvatar()
-//            }
         presenter?.viewDidLoad()
         updateAvatar()
     }
