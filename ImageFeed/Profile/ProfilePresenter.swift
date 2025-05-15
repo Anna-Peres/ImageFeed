@@ -7,16 +7,18 @@
 
 import Foundation
 
-public protocol ProfilePresenterProtocol {
+protocol ProfilePresenterProtocol {
     var view: ProfileViewControllerProtocol? { get set }
     func viewDidLoad()
     func updateAvatarUrl() -> URL?
+    func getProfile() -> Profile?
 }
 
 final class ProfilePresenter: ProfilePresenterProtocol {
     weak var view: ProfileViewControllerProtocol?
     private var profileImageServiceObserver: NSObjectProtocol?
     private var profileImageService = ProfileImageService.shared
+    private var profileService = ProfileService.shared
     
     func viewDidLoad() {
         print("ProfilePresenter loaded")
@@ -38,9 +40,19 @@ final class ProfilePresenter: ProfilePresenterProtocol {
                 }
             }
     }
+    
     func updateAvatarUrl() -> URL? {
         guard let profileImageURL = profileImageService.avatarURL else { return URL(string: "https://api.unsplash.com") }
         let imageUrl = URL(string: profileImageURL)
         return imageUrl
+    }
+    
+    func getProfile() -> Profile? {
+        //        guard storage.token != nil else {
+        //            print("Authorization token not found")
+        //            return
+        //        }
+        let profile = profileService.profile
+        return profile
     }
 }

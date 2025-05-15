@@ -8,7 +8,7 @@
 import UIKit
 import Kingfisher
 
-public protocol ProfileViewControllerProtocol: AnyObject {
+protocol ProfileViewControllerProtocol: AnyObject {
     var presenter: ProfilePresenterProtocol? { get set }
     func updateAvatar()
 }
@@ -139,12 +139,16 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
     }
     
     private func updateProfileDetails() {
-        guard storage.token != nil else {
-            print("Authorization token not found")
+//        guard storage.token != nil else {
+//            print("Authorization token not found")
+//            return
+//        }
+//        guard let profile = profileService.profile else { return }
+//
+        guard let profile = presenter?.getProfile() else {
+            print("Error retrieving profile data")
             return
         }
-        guard let profile = profileService.profile else { return }
-        
         nameLabel.text = profile.name
         loginNameLabel.text = profile.loginName
         descriptionLabel.text = profile.bio
