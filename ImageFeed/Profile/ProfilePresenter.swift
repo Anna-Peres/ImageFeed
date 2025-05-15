@@ -10,11 +10,13 @@ import Foundation
 public protocol ProfilePresenterProtocol {
     var view: ProfileViewControllerProtocol? { get set }
     func viewDidLoad()
+    func updateAvatarUrl() -> URL?
 }
 
 final class ProfilePresenter: ProfilePresenterProtocol {
     weak var view: ProfileViewControllerProtocol?
     private var profileImageServiceObserver: NSObjectProtocol?
+    private var profileImageService = ProfileImageService.shared
     
     func viewDidLoad() {
         print("ProfilePresenter loaded")
@@ -35,5 +37,10 @@ final class ProfilePresenter: ProfilePresenterProtocol {
                     self.view?.updateAvatar()
                 }
             }
+    }
+    func updateAvatarUrl() -> URL? {
+        guard let profileImageURL = profileImageService.avatarURL else { return URL(string: "https://api.unsplash.com") }
+        let imageUrl = URL(string: profileImageURL)
+        return imageUrl
     }
 }

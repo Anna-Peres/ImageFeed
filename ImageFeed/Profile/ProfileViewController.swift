@@ -48,8 +48,9 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
     }
     
     func updateAvatar() {
-        guard let profileImageURL = profileImageService.avatarURL else { return }
-        let imageUrl = URL(string: profileImageURL)
+//        guard let profileImageURL = profileImageService.avatarURL else { return }
+//        let imageUrl = URL(string: profileImageURL)
+        let imageUrl = presenter?.updateAvatarUrl()
         profileImageView.kf.setImage(with: imageUrl,
                                      placeholder: UIImage(named: "placeholder_for_profile"))
     }
