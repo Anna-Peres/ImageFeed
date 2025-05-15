@@ -97,9 +97,16 @@ extension ImagesListViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard let count = presenter?.photos.count else { return }
-        if indexPath.row == count - 1 {
-            presenter?.loadImages()
+        let testMode = ProcessInfo.processInfo.arguments.contains("testMode")
+        if testMode {
+            if indexPath.row == 9 {
+                presenter?.loadImages()
+            }
+        } else {
+            guard let count = presenter?.photos.count else { return }
+            if indexPath.row == count - 1 {
+                presenter?.loadImages()
+            }
         }
     }
 }
