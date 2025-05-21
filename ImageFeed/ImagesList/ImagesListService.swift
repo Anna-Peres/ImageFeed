@@ -11,16 +11,16 @@ enum ImagesListServiceError: Error {
 }
 
 final class ImagesListService {
+    var imagesListServiceObserver: NSObjectProtocol?
+    var photos: [Photo] = []
+    static let didChangeNotification = Notification.Name(rawValue: "ImagesListService.didChangeNotification")
+    static let shared = ImagesListService()
     private let session = URLSession.shared
     private var task: URLSessionTask?
     private let storage = OAuth2TokenStorage()
-    static let didChangeNotification = Notification.Name(rawValue: "ImagesListService.didChangeNotification")
-    var imageListServiceObserver: NSObjectProtocol?
-    static let shared = ImagesListService()
     private var pageNumber = 1
     private let decoder = JSONDecoder()
-    var photos: [Photo] = []
-    
+
     private init() {}
     
     func fetchPhotosNextPage(completion: @escaping (Error?) -> Void) {
@@ -84,17 +84,8 @@ final class ImagesListService {
         task?.resume()
     }
     
-    private func request() -> URLRequest? {
-        var components = URLComponents(string: "https://api.unsplash.com/photos")
-        components?.queryItems = [URLQueryItem(name: "page", value: String(pageNumber))]
-        guard
-            let url = components?.url,
-            let token = storage.token
-        else { return nil }
-        var request = URLRequest(url: url)
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        
-        return request
+    func cleanPhotos() {
+        photos.removeAll()
     }
     
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
@@ -146,8 +137,17 @@ final class ImagesListService {
         task?.resume()
     }
     
-    func cleanPhotos() {
-        photos.removeAll()
+    private func request() -> URLRequest? {
+        var components = URLComponents(string: "https://api.unsplash.com/photos")
+        components?.queryItems = [URLQueryItem(name: "page", value: String(pageNumber))]
+        guard
+            let url = components?.url,
+            let token = storage.token
+        else { return nil }
+        var request = URLRequest(url: url)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        return request
     }
 }
 

@@ -12,11 +12,10 @@ final class SplashViewController: UIViewController {
     private let storage = OAuth2TokenStorage()
     
     // MARK: - UI Elements
-    private var logoImageView: UIImageView?
-    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
+    private var logoImageView: UIImageView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,12 +82,10 @@ extension SplashViewController: AuthViewControllerDelegate {
         fetchProfile(token)
     }
     
-    func fetchProfile(_ token: String) {
+    private func fetchProfile(_ token: String) {
         UIBlockingProgressHUD.show()
         ProfileService.shared.fetchProfile(token) { [weak self] result in
             UIBlockingProgressHUD.dismiss()
-            
-            guard let self = self else { return }
             
             switch result {
             case .success(let profile):
@@ -100,6 +97,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                         print("[SplashViewController] - \(error.localizedDescription)")
                     }
                 }
+                guard let self = self else { return }
                 self.switchToTabBarController()
             case .failure:
                 print("Error loading profile")

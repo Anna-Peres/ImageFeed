@@ -8,12 +8,14 @@
 import UIKit
 import Kingfisher
 
-final class ProfileViewController: UIViewController {
+protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfilePresenterProtocol? { get set }
+    func updateAvatar()
+}
+
+final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
     // MARK: - Services
-    private var profileService = ProfileService.shared
-    private var profileImageService = ProfileImageService.shared
-    private let storage = OAuth2TokenStorage()
-    private var profileImageServiceObserver: NSObjectProtocol?
+    var presenter: ProfilePresenterProtocol?
     private var profileLogoutService = ProfileLogoutService.shared
     private let splashViewController = SplashViewController()
     
@@ -38,18 +40,14 @@ final class ProfileViewController: UIViewController {
         configureDescriptionLabel()
         configureLogoutButton()
         updateProfileDetails()
-        
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ProfileImageService.didChangeNotification,
-                object: nil,
-                queue: .main
-            ) { [weak self] _ in
-                guard let self = self else { return }
-                self.updateAvatar()
-            }
-        
+        presenter?.viewDidLoad()
         updateAvatar()
+    }
+    
+    func updateAvatar() {
+        let imageUrl = presenter?.updateAvatarUrl()
+        profileImageView.kf.setImage(with: imageUrl,
+                                     placeholder: UIImage(named: "placeholder_for_profile"))
     }
     
     @IBAction private func didTapLogoutButton() {
@@ -125,6 +123,7 @@ final class ProfileViewController: UIViewController {
             action: #selector(Self.didTapLogoutButton)
         )
         view.addSubview(logoutButton)
+        logoutButton.accessibilityIdentifier = "logout button"
         logoutButton.tintColor = .ypRed
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -136,22 +135,13 @@ final class ProfileViewController: UIViewController {
     }
     
     private func updateProfileDetails() {
-        guard storage.token != nil else {
-            print("Authorization token not found")
+        guard let profile = presenter?.getProfile() else {
+            print("Error retrieving profile data")
             return
         }
-        guard let profile = profileService.profile else { return }
-        
         nameLabel.text = profile.name
         loginNameLabel.text = profile.loginName
         descriptionLabel.text = profile.bio
-    }
-    
-    private func updateAvatar() {
-        guard let profileImageURL = profileImageService.avatarURL else { return }
-        let imageUrl = URL(string: profileImageURL)
-        profileImageView.kf.setImage(with: imageUrl,
-                                     placeholder: UIImage(named: "placeholder_for_profile"))
     }
     
     private func switchToAuthViewController() {
