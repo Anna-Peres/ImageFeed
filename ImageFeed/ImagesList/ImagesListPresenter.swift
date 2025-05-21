@@ -43,7 +43,21 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
         }
     }
     
-    func updateImagesList() {
+    func loadImages() {
+        imagesListService.fetchPhotosNextPage { [weak self] error in
+            guard let self else { return }
+            
+            if let error {
+                print(error.localizedDescription)
+            } else {
+                DispatchQueue.main.async {
+                    self.view?.updateTableViewAnimated()
+                }
+            }
+        }
+    }
+    
+    private func updateImagesList() {
         imagesListService.imagesListServiceObserver = NotificationCenter.default
             .addObserver(
                 forName: ImagesListService.didChangeNotification,
@@ -57,20 +71,6 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
                     self.view?.updateTableViewAnimated()
                 }
             }
-    }
-    
-    func loadImages() {
-        imagesListService.fetchPhotosNextPage { [weak self] error in
-            guard let self else { return }
-            
-            if let error {
-                print(error.localizedDescription)
-            } else {
-                DispatchQueue.main.async {
-                    self.view?.updateTableViewAnimated()
-                }
-            }
-        }
     }
 }
 

@@ -14,15 +14,14 @@ protocol ImagesListCellDelegate: AnyObject {
 
 protocol ImagesListViewControllerProtocol: AnyObject {
     var presenter: ImagesListPresenterProtocol? { get set }
-    func updateTableViewAnimated()
     var tableView: UITableView? { get }
+    func updateTableViewAnimated()
 }
 
 final class ImagesListViewController: UIViewController & ImagesListViewControllerProtocol {
     // MARK: - Services
-    private let showSingleImageSegueIdentifier = "ShowSingleImage"
     var presenter: ImagesListPresenterProtocol?
-    
+    private let showSingleImageSegueIdentifier = "ShowSingleImage"
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
@@ -132,7 +131,7 @@ extension ImagesListViewController: UITableViewDataSource {
 }
 
 extension ImagesListViewController {
-    func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
+    private func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         guard let image = presenter?.photos[indexPath.row] else { return }
         let imageUrl = URL(string: image.thumbImageURL)
         cell.cellImage.kf.setImage(with: imageUrl, placeholder: UIImage(named: "placeholder.jpeg"))

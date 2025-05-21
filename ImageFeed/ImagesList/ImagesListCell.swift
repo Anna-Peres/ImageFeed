@@ -28,12 +28,6 @@ final class ImagesListCell: UITableViewCell {
         print("Like button is tapped")
     }
     
-    func configure(with model: ImagesListCellViewModel) {
-        cellImage.image = model.image
-        likeButton.isSelected = model.isLiked
-        dateLabel.text = model.date
-    }
-    
     override func prepareForReuse() {
         super.prepareForReuse()
         cellImage.kf.cancelDownloadTask()
@@ -42,6 +36,12 @@ final class ImagesListCell: UITableViewCell {
     func setIsLiked(cell: ImagesListCell, _ isLiked: Bool) {
         let likeImage = isLiked ? UIImage(named: "like_button_on") : UIImage(named: "like_button_off")
         cell.likeButton.setImage(likeImage, for: .normal)
+    }
+    
+    private func configure(with model: ImagesListCellViewModel) {
+        cellImage.image = model.image
+        likeButton.isSelected = model.isLiked
+        dateLabel.text = model.date
     }
 }
 

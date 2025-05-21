@@ -8,7 +8,7 @@
 import Foundation
 import WebKit
 
-public protocol WebViewPresenterProtocol {
+protocol WebViewPresenterProtocol {
     var view: WebViewViewControllerProtocol? { get set }
     func viewDidLoad()
     func didUpdateProgressValue(_ newValue: Double)
@@ -17,7 +17,7 @@ public protocol WebViewPresenterProtocol {
 
 final class WebViewPresenter: WebViewPresenterProtocol {
     weak var view: WebViewViewControllerProtocol?
-    var authHelper: AuthHelperProtocol
+    private var authHelper: AuthHelperProtocol
     
     init(authHelper: AuthHelperProtocol) {
         self.authHelper = authHelper
@@ -43,6 +43,6 @@ final class WebViewPresenter: WebViewPresenterProtocol {
     }
     
     func code(from url: URL) -> String? {
-        authHelper.code(from: url)
+        authHelper.createAuthURLRequest(from: url)
     }
 }

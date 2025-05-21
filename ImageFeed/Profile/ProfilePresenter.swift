@@ -25,7 +25,18 @@ final class ProfilePresenter: ProfilePresenterProtocol {
         updateProfile()
     }
     
-    func updateProfile() {
+    func updateAvatarUrl() -> URL? {
+        guard let profileImageURL = profileImageService.avatarURL else { return URL(string: "https://api.unsplash.com") }
+        let imageUrl = URL(string: profileImageURL)
+        return imageUrl
+    }
+    
+    func getProfile() -> Profile? {
+        let profile = profileService.profile
+        return profile
+    }
+    
+    private func updateProfile() {
         profileImageServiceObserver = NotificationCenter.default
             .addObserver(
                 forName: ProfileImageService.didChangeNotification,
@@ -39,16 +50,5 @@ final class ProfilePresenter: ProfilePresenterProtocol {
                     self.view?.updateAvatar()
                 }
             }
-    }
-    
-    func updateAvatarUrl() -> URL? {
-        guard let profileImageURL = profileImageService.avatarURL else { return URL(string: "https://api.unsplash.com") }
-        let imageUrl = URL(string: profileImageURL)
-        return imageUrl
-    }
-    
-    func getProfile() -> Profile? {
-        let profile = profileService.profile
-        return profile
     }
 }

@@ -15,9 +15,9 @@ protocol ProfileViewControllerProtocol: AnyObject {
 
 final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
     // MARK: - Services
+    var presenter: ProfilePresenterProtocol?
     private var profileLogoutService = ProfileLogoutService.shared
     private let splashViewController = SplashViewController()
-    var presenter: ProfilePresenterProtocol?
     
     // MARK: - UI Elements
     private var nameLabel = UILabel()
