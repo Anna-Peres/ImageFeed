@@ -87,8 +87,6 @@ extension SplashViewController: AuthViewControllerDelegate {
         ProfileService.shared.fetchProfile(token) { [weak self] result in
             UIBlockingProgressHUD.dismiss()
             
-            guard let self = self else { return }
-            
             switch result {
             case .success(let profile):
                 ProfileImageService.shared.fetchProfileImageURL(username: profile.username) { result in
@@ -99,6 +97,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                         print("[SplashViewController] - \(error.localizedDescription)")
                     }
                 }
+                guard let self = self else { return }
                 self.switchToTabBarController()
             case .failure:
                 print("Error loading profile")
